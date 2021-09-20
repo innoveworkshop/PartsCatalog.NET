@@ -64,8 +64,6 @@ namespace PartsCatalog.Models {
 					"Server response: " + reader.ReadToEnd(), ex);
 				throw wex;
 			}
-
-			return null;
 		}
 
 		/// <summary>
