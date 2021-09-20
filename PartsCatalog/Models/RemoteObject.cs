@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Net;
+using System.IO;
+using System.Xml;
 
 namespace PartsCatalog.Models {
 	/// <summary>
@@ -12,8 +15,58 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		protected const string BaseURL = "http://blueberry.farm.lan:8080/PartsCatalog";
 		private string _endpoint;
-		private int _id;
-		private bool _persistent = false;
+		private int _id = -1;
+		private PersistenceStatus _persistent = PersistenceStatus.Creating;
+
+		/// <summary>
+		/// Identifies the status of the persistent object.
+		/// </summary>
+		public enum PersistenceStatus {
+			Creating = 0,
+			NotLoaded = 1,
+			Loading = 2,
+			Loaded = 3
+		}
+
+		/// <summary>
+		/// Gets the XML document from the remote server.
+		/// </summary>
+		/// <param name="request">Prepared web request so that we only need to parse the output.</param>
+		/// <returns>XML document from the remote server response.</returns>
+		protected XmlDocument GetRemoteXML(WebRequest request) {
+			try {
+				// Request the item from the server.
+				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+				if (response.StatusCode != HttpStatusCode.OK) {
+					response.Close();
+					Invalidate();
+
+					throw new Exception("An error occurred while trying to fetch data " +
+						"from the server. HTTP status: " + response.StatusCode + " " +
+						response.StatusDescription);
+				}
+
+				// Get the server response and load it into the XML parser.
+				XmlDocument doc = new XmlDocument();
+				Stream stream = response.GetResponseStream();
+				doc.Load(stream);
+				stream.Close();
+				response.Close();
+
+				return doc;
+			} catch (WebException ex) {
+				Invalidate();
+
+				// Get the response body and append it to the exception to be rethrown.
+				Stream stream = ex.Response.GetResponseStream();
+				StreamReader reader = new StreamReader(stream);
+				WebException wex = new WebException(ex.Message + 
+					"Server response: " + reader.ReadToEnd(), ex);
+				throw wex;
+			}
+
+			return null;
+		}
 
 		/// <summary>
 		/// Populates the object with data from the remote server when the ID property
@@ -33,20 +86,18 @@ namespace PartsCatalog.Models {
 		/// <summary>
 		/// Commits any local changes to the class to the database.
 		/// </summary>
-		/// <returns>True if the operation was successful.</returns>
-		public abstract bool Save();
+		public abstract void Save();
 
 		/// <summary>
 		/// Deletes the entry from the remote database without affecting our local copy.
 		/// </summary>
-		/// <returns>True if the operation was successful.</returns>
-		public abstract bool Delete();
+		public abstract void Delete();
 
 		/// <summary>
 		/// 
 		/// </summary>
 		protected void LazyLoad() {
-			if (Persistent)
+			if (Persistent > PersistenceStatus.NotLoaded)
 				return;
 
 			// Populate the object.
@@ -54,11 +105,19 @@ namespace PartsCatalog.Models {
 		}
 
 		/// <summary>
-		/// Checks if this object has been populated with database data.
+		/// Invalidates this object to flag that it's no longer persistent.
 		/// </summary>
-		/// <returns>True if the object is persistent.</returns>
-		public bool IsPersistent() {
-			return Persistent;
+		public void Invalidate() {
+			ID = -1;
+			Persistent = PersistenceStatus.Creating;
+		}
+
+		/// <summary>
+		/// Checks if the object has been fully loaded and is persistent.
+		/// </summary>
+		/// <returns>True if the object has been fully loaded.</returns>
+		public Boolean IsPersistent() {
+			return Persistent == PersistenceStatus.Loaded;
 		}
 
 		/// <summary>
@@ -74,13 +133,18 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		public int ID {
 			get { return _id; }
-			set { _id = value; }
+			set {
+				if (value >= 0)
+					Persistent = PersistenceStatus.NotLoaded;
+
+				_id = value;
+			}
 		}
 
 		/// <summary>
 		/// Object and database persistence relationship.
 		/// </summary>
-		public bool Persistent {
+		public PersistenceStatus Persistent {
 			get { return _persistent; }
 			set { _persistent = value; }
 		}
