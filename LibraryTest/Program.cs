@@ -21,9 +21,7 @@ namespace LibraryTest {
 
 			// Test Category.
 			Console.WriteLine("Category:");
-			Category category = new Category(36);
-			category.Name = "Cat Test 1";
-			category.Save();
+			Category category = new Category(1);
 			Console.WriteLine("ID: " + category.ID);
 			Console.WriteLine("Name: " + category.Name);
 			Console.WriteLine("Sub-Categories:");
@@ -33,14 +31,18 @@ namespace LibraryTest {
 			Console.WriteLine();
 
 			// Test SubCategory.
-			Console.WriteLine("Sub-Category");
-			SubCategory subCategory = new SubCategory(54);
-			subCategory.Name = "Hello Test 2";
-			subCategory.Parent.ID = 36;
-			subCategory.Save();
+			Console.WriteLine("Sub-Category:");
+			SubCategory subCategory = new SubCategory(1);
 			Console.WriteLine("ID: {0}", subCategory.ID);
 			Console.WriteLine("Name: {0}", subCategory.Name);
 			Console.WriteLine("Parent: {0}", subCategory.Parent.Name);
+			Console.WriteLine();
+
+			// Test Package.
+			Console.WriteLine("Package:");
+			Package package = new Package(1);
+			Console.WriteLine("ID: {0}", package.ID);
+			Console.WriteLine("Name: {0}", package.Name);
 			Console.WriteLine();
 
 			Console.ReadLine();
