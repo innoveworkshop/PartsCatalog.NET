@@ -34,6 +34,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Component.cs" />
+    <Compile Include="Models\Property.cs" />
     <Compile Include="Models\Package.cs" />
     <Compile Include="Models\RemoteObject.cs" />
     <Compile Include="Models\SubCategory.cs" />
