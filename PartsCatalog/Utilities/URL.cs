@@ -6,7 +6,7 @@ namespace PartsCatalog.Utilities {
 	/// <summary>
 	/// A simple class to help us build URLs for requests more easily.
 	/// </summary>
-	public class URLBuilder {
+	public class URL {
 		private string baseURL;
 		private string endpoint;
 		private Dictionary<string, Object> parameters;
@@ -16,7 +16,7 @@ namespace PartsCatalog.Utilities {
 		/// </summary>
 		/// <param name="baseURL">Base URL of an API.</param>
 		/// <param name="endpoint">API endpoint.</param>
-		public URLBuilder(string baseURL, string endpoint) {
+		public URL(string baseURL, string endpoint) {
 			this.baseURL = baseURL;
 			this.endpoint = endpoint;
 			Parameters = new Dictionary<string, object>();
@@ -38,7 +38,8 @@ namespace PartsCatalog.Utilities {
 			if (Parameters.Count > 0) {
 				url += "?";
 				foreach (KeyValuePair<string, object> parameter in Parameters) {
-					url += parameter.Key + "=" + Uri.EscapeUriString(parameter.Value.ToString()) + "&";
+					url += parameter.Key + "=" +
+						Uri.EscapeUriString(parameter.Value.ToString()) + "&";
 				}
 
 				// Remote the trailling & from the URL string.
