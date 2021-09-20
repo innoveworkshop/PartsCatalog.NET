@@ -8,26 +8,26 @@ using PartsCatalog.Utilities;
 
 namespace PartsCatalog.Models {
 	/// <summary>
-	/// Component sub-category abstraction.
+	/// Component category abstraction.
 	/// </summary>
-	public class SubCategory : RemoteObject {
+	public class Category : RemoteObject {
 		private string _name;
-		private Category _parent;
+		private List<SubCategory> _subCategories;
 
 		/// <summary>
-		/// Creates an empty sub-category object.
+		/// Creates an empty category object.
 		/// </summary>
-		public SubCategory() {
-			Endpoint = "/subcategory";
+		public Category() {
+			Endpoint = "/category";
 			Invalidate();
-			Parent = new Category();
+			SubCategories = new List<SubCategory>();
 		}
 
 		/// <summary>
 		/// Creates a sub-category object with the ID pre-populated.
 		/// </summary>
 		/// <param name="id">Possible ID of the object in the database.</param>
-		public SubCategory(int id) : this() {
+		public Category(int id) : this() {
 			ID = id;
 		}
 
@@ -48,7 +48,9 @@ namespace PartsCatalog.Models {
 
 			// Populate the object.
 			Name = doc.DocumentElement["name"].InnerText;
-			Parent.ID = int.Parse(doc.DocumentElement["category"].GetAttribute("id"));
+			foreach (XmlNode node in doc.DocumentElement["subcategories"].ChildNodes) {
+				SubCategories.Add(new SubCategory(int.Parse(node.Attributes["id"].InnerText)));
+			}
 
 			Persistent = PersistenceStatus.Loaded;
 		}
@@ -60,18 +62,6 @@ namespace PartsCatalog.Models {
 			if (IsPersistent())
 				url.Parameters.Add("id", ID);
 
-			// Check if the parent is valid.
-			if (!Parent.IsPersistent()) {
-				try {
-					Parent.Retrieve();
-					if (!Parent.IsPersistent())
-						throw new Exception("Parent category still in creation");
-				} catch (Exception ex) {
-					throw new Exception("Parent category isn't persistent (" +
-						ex.Message + ")");
-				}
-			}
-
 			// Prepare the request.
 			WebRequest request = WebRequest.Create(url.ToString());
 			request.Method = "POST";
@@ -80,7 +70,6 @@ namespace PartsCatalog.Models {
 			// Build request body.
 			HttpRequestBody body = new HttpRequestBody();
 			body.Parameters.Add("name", Name);
-			body.Parameters.Add("category", Parent.ID);
 			byte[] bodyBytes = body.GetBytes();
 
 			// Send the request and get the response from the server.
@@ -113,7 +102,7 @@ namespace PartsCatalog.Models {
 		}
 
 		/// <summary>
-		/// Sub-category name.
+		/// Category name.
 		/// </summary>
 		public string Name {
 			get { LazyLoad(); return _name; }
@@ -121,11 +110,11 @@ namespace PartsCatalog.Models {
 		}
 
 		/// <summary>
-		/// Parent category.
+		/// Child sub-categories.
 		/// </summary>
-		public Category Parent {
-			get { LazyLoad(); return _parent; }
-			set { LazyLoad(); _parent = value; }
+		public List<SubCategory> SubCategories {
+			get { LazyLoad(); return _subCategories; }
+			set { LazyLoad(); _subCategories = value; }
 		}
 	}
 }
