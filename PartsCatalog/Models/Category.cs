@@ -24,7 +24,7 @@ namespace PartsCatalog.Models {
 		}
 
 		/// <summary>
-		/// Creates a sub-category object with the ID pre-populated.
+		/// Creates a category object with the ID pre-populated.
 		/// </summary>
 		/// <param name="id">Possible ID of the object in the database.</param>
 		public Category(int id) : this() {
