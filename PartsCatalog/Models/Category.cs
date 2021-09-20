@@ -48,6 +48,7 @@ namespace PartsCatalog.Models {
 
 			// Populate the object.
 			Name = doc.DocumentElement["name"].InnerText;
+			SubCategories.Clear();
 			foreach (XmlNode node in doc.DocumentElement["subcategories"].ChildNodes) {
 				SubCategories.Add(new SubCategory(int.Parse(node.Attributes["id"].InnerText)));
 			}
