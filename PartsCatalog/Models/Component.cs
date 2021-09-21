@@ -39,6 +39,34 @@ namespace PartsCatalog.Models {
 			ID = id;
 		}
 
+		/// <summary>
+		/// Populates the specified list with all of the available components that belong
+		/// to a given container given by <paramref name="criteria"/>.
+		/// </summary>
+		/// <typeparam name="T">Type of the container object. (e.g. <see cref="Category"/>)</typeparam>
+		/// <param name="list">List to be populated with components from the remote server.</param>
+		/// <param name="queryParam">URL parameter query name.</param>
+		/// <param name="criteria">Container that will be used as filtering criteria</param>
+		public void List<T>(IList<Component> list, string queryParam,
+				RemoteObject<T> criteria) where T : RemoteObject<T>, new() {
+			// Start with a blank slate.
+			list.Clear();
+
+			// Build the query URL.
+			URL url = new URL(BaseURL, Endpoint);
+			url.Parameters.Add("format", "xml");
+			url.Parameters.Add(queryParam, criteria.ID);
+
+			// Request the items from the server.
+			WebRequest request = WebRequest.Create(url.ToString());
+			XmlDocument doc = GetRemoteXML(request);
+
+			// Populate the object.
+			foreach (XmlNode node in doc.DocumentElement.ChildNodes) {
+				list.Add(new Component(int.Parse(node.Attributes["id"].InnerText)));
+			}
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
