@@ -34,6 +34,9 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		/// <param name="list">List to be populated with objects from the remote server.</param>
 		public void List(IList<T> list) {
+			// Start with a blank slate.
+			list.Clear();
+
 			// Build the query URL.
 			URL url = new URL(BaseURL, Endpoint);
 			url.Parameters.Add("format", "xml");
