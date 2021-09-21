@@ -76,7 +76,7 @@ namespace PartsCatalog.Models {
 			if (IsPersistent())
 				url.Parameters.Add("id", ID);
 
-			// Check if the category is valid, since it is required by the database.
+			// Check for the validity of the category.
 			if (!Category.IsPersistent()) {
 				try {
 					Category.Retrieve();
@@ -84,6 +84,30 @@ namespace PartsCatalog.Models {
 						throw new Exception("Component category still in creation");
 				} catch (Exception ex) {
 					throw new Exception("Component category isn't persistent (" +
+						ex.Message + ")");
+				}
+			}
+
+			// Check for the validity of the sub-category.
+			if (!SubCategory.IsPersistent()) {
+				try {
+					SubCategory.Retrieve();
+					if (!SubCategory.IsPersistent())
+						throw new Exception("Component sub-category still in creation");
+				} catch (Exception ex) {
+					throw new Exception("Component sub-category isn't persistent (" +
+						ex.Message + ")");
+				}
+			}
+
+			// Check for the validity of the sub-category.
+			if (!Package.IsPersistent()) {
+				try {
+					Package.Retrieve();
+					if (!Package.IsPersistent())
+						throw new Exception("Component package still in creation");
+				} catch (Exception ex) {
+					throw new Exception("Component package isn't persistent (" +
 						ex.Message + ")");
 				}
 			}
@@ -99,10 +123,8 @@ namespace PartsCatalog.Models {
 			body.Parameters.Add("quantity", Quantity);
 			body.Parameters.Add("description", Description);
 			body.Parameters.Add("category", Category.ID);
-			if (SubCategory.IsPersistent())
-				body.Parameters.Add("subcategory", SubCategory.ID);
-			if (Package.IsPersistent())
-				body.Parameters.Add("package", Package.ID);
+			body.Parameters.Add("subcategory", SubCategory.ID);
+			body.Parameters.Add("package", Package.ID);
 			byte[] bodyBytes = body.GetBytes();
 
 			// Send the request and get the response from the server.
@@ -126,6 +148,7 @@ namespace PartsCatalog.Models {
 			WebRequest request = WebRequest.Create(url.ToString());
 			request.Method = "DELETE";
 			GetRemoteXML(request);
+			Properties.Clear();
 
 			Invalidate();
 		}

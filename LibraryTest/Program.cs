@@ -48,7 +48,6 @@ namespace LibraryTest {
 			// Test Property.
 			Console.WriteLine("Property:");
 			Property property = new Property(10);
-			// TODO: Test creation and update.
 			Console.WriteLine("ID: {0}", property.ID);
 			Console.WriteLine("Name: {0}", property.Name);
 			Console.WriteLine("Value: {0}", property.Value);
@@ -57,8 +56,7 @@ namespace LibraryTest {
 
 			// Test Component.
 			Console.WriteLine("Component:");
-			Component component = new Component(2);
-			// TODO: Test creation and update.
+			Component component = new Component(1);
 			Console.WriteLine("ID: {0}", component.ID);
 			Console.WriteLine("Name: {0}", component.Name);
 			Console.WriteLine("Quantity: {0}", component.Quantity);
@@ -66,6 +64,7 @@ namespace LibraryTest {
 			Console.WriteLine("Category: {0}", component.Category);
 			Console.WriteLine("Sub-Category: {0}", component.SubCategory);
 			Console.WriteLine("Package: {0}", component.Package);
+			Console.WriteLine("Properties:");
 			foreach (Property prop in component.Properties) {
 				Console.WriteLine("    - " + prop);
 			}
