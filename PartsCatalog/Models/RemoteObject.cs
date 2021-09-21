@@ -85,7 +85,9 @@ namespace PartsCatalog.Models {
 				// Get the server response and load it into the XML parser.
 				XmlDocument doc = new XmlDocument();
 				Stream stream = response.GetResponseStream();
-				doc.Load(stream);
+				StreamReader reader = new StreamReader(stream, Encoding.GetEncoding("UTF-8"));
+				doc.Load(reader);
+				reader.Close();
 				stream.Close();
 				response.Close();
 
@@ -190,7 +192,7 @@ namespace PartsCatalog.Models {
 		/// <summary>
 		/// Object and database persistence relationship.
 		/// </summary>
-		public PersistenceStatus Persistent {
+		protected PersistenceStatus Persistent {
 			get { return _persistent; }
 			set { _persistent = value; }
 		}
