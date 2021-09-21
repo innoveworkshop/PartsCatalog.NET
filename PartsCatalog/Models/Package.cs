@@ -78,20 +78,6 @@ namespace PartsCatalog.Models {
 			Persistent = PersistenceStatus.Loaded;
 		}
 
-		public override void Delete() {
-			// Build the query URL.
-			URL url = new URL(BaseURL, Endpoint);
-			url.Parameters.Add("id", ID);
-			url.Parameters.Add("format", "xml");
-
-			// Request the item from the server.
-			WebRequest request = WebRequest.Create(url.ToString());
-			request.Method = "DELETE";
-			GetRemoteXML(request);
-
-			Invalidate();
-		}
-
 		public override string ToString() {
 			return Name;
 		}

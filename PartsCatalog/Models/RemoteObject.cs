@@ -122,7 +122,19 @@ namespace PartsCatalog.Models {
 		/// <summary>
 		/// Deletes the entry from the remote database without affecting our local copy.
 		/// </summary>
-		public abstract void Delete();
+		public void Delete() {
+			// Build the query URL.
+			URL url = new URL(BaseURL, Endpoint);
+			url.Parameters.Add("id", ID);
+			url.Parameters.Add("format", "xml");
+
+			// Request the item from the server.
+			WebRequest request = WebRequest.Create(url.ToString());
+			request.Method = "DELETE";
+			GetRemoteXML(request);
+
+			Invalidate();
+		}
 
 		/// <summary>
 		/// 
