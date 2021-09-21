@@ -4,12 +4,13 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Xml;
+using PartsCatalog.Utilities;
 
 namespace PartsCatalog.Models {
 	/// <summary>
 	/// Abstracts objects that are available remotely via API endpoints.
 	/// </summary>
-	public abstract class RemoteObject {
+	public abstract class RemoteObject<T> where T : RemoteObject<T>, new() {
 		/// <summary>
 		/// Base URL where the PartsCatalog web service is located at.
 		/// </summary>
@@ -26,6 +27,38 @@ namespace PartsCatalog.Models {
 			NotLoaded = 1,
 			Loading = 2,
 			Loaded = 3
+		}
+
+		/// <summary>
+		/// Populates the specified list with all of the available objects of its type.
+		/// </summary>
+		/// <param name="list">List to be populated with objects from the remote server.</param>
+		public void List(IList<T> list) {
+			// Build the query URL.
+			URL url = new URL(BaseURL, Endpoint);
+			url.Parameters.Add("format", "xml");
+
+			// Request the items from the server.
+			WebRequest request = WebRequest.Create(url.ToString());
+			XmlDocument doc = GetRemoteXML(request);
+
+			// Populate the object.
+			foreach (XmlNode node in doc.DocumentElement.ChildNodes) {
+				T obj = new T();
+				obj.ID = int.Parse(node.Attributes["id"].InnerText);
+
+				list.Add(obj);
+			}
+		}
+
+		/// <summary>
+		/// Gets a list with all of the available objects of its type.
+		/// </summary>
+		/// <returns>List populated with objects from the remote server.</returns>
+		public List<T> List() {
+			List<T> list = new List<T>();
+			List(list);
+			return list;
 		}
 
 		/// <summary>

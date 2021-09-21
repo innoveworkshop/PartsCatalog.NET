@@ -10,7 +10,7 @@ namespace PartsCatalog.Models {
 	/// <summary>
 	/// Component property abstraction.
 	/// </summary>
-	public class Property : RemoteObject {
+	public class Property : RemoteObject<Property> {
 		private string _name;
 		private string _value;
 		private Component _parent;

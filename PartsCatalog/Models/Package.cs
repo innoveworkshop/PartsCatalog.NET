@@ -10,7 +10,7 @@ namespace PartsCatalog.Models {
 	/// <summary>
 	/// Component package abstraction.
 	/// </summary>
-	public class Package : RemoteObject {
+	public class Package : RemoteObject<Package> {
 		private string _name;
 
 		/// <summary>

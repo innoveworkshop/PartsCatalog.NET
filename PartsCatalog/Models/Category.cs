@@ -10,7 +10,7 @@ namespace PartsCatalog.Models {
 	/// <summary>
 	/// Component category abstraction.
 	/// </summary>
-	public class Category : RemoteObject {
+	public class Category : RemoteObject<Category> {
 		private string _name;
 		private List<SubCategory> _subCategories;
 
