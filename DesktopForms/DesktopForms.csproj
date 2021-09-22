@@ -49,6 +49,12 @@
       <DependentUpon>ComponentForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PartsCatalog\PartsCatalog.csproj">
+      <Project>{7EF4491D-DF78-42D0-9339-28F84C8C1560}</Project>
+      <Name>PartsCatalog</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
