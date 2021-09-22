@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using PartsCatalog.Models;
 
-namespace DesktopForms {
+namespace PartsCatalog.DesktopForms {
 	public partial class ComponentForm : Form {
 		private PartsCatalog.Models.Component _component;
 		private BindingList<Property> properties;

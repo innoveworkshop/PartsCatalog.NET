@@ -7,8 +7,8 @@
     <ProjectGuid>{BE318A09-8BD4-49C6-8998-D943B27963B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DesktopForms</RootNamespace>
-    <AssemblyName>DesktopForms</AssemblyName>
+    <RootNamespace>PartsCatalog.DesktopForms</RootNamespace>
+    <AssemblyName>PartsCatalog.DesktopForms</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

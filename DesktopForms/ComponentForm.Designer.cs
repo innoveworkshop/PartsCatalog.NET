@@ -1,4 +1,4 @@
-namespace DesktopForms {
+namespace PartsCatalog.DesktopForms {
 	partial class ComponentForm {
 		/// <summary>
 		/// Required designer variable.
