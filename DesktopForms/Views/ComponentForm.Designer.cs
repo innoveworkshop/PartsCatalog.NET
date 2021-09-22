@@ -23,10 +23,12 @@ namespace PartsCatalog.DesktopForms.Views {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ComponentForm));
 			this.stpStatus = new System.Windows.Forms.StatusStrip();
 			this.tslNotification = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tslSeparator1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.tslID = new System.Windows.Forms.ToolStripStatusLabel();
 			this.stpMenu = new System.Windows.Forms.MenuStrip();
 			this.componentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +51,19 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
 			this.deleteToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
 			this.stpTool = new System.Windows.Forms.ToolStrip();
+			this.refreshToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.duplicateToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.deleteToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.showDatasheetToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.deleteDatasheetToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.downloadDatasheetToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.addPropertyToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.editPropertyToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.deletePropertyToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.panMain = new System.Windows.Forms.Panel();
 			this.panProperties = new System.Windows.Forms.Panel();
 			this.grdProperties = new System.Windows.Forms.DataGridView();
@@ -67,15 +82,19 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.lblQuantity = new System.Windows.Forms.Label();
 			this.btnDatasheet = new System.Windows.Forms.Button();
 			this.picImage = new System.Windows.Forms.PictureBox();
-			this.tslID = new System.Windows.Forms.ToolStripStatusLabel();
+			this.ctmProperty = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.contextPropertyEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.contextPropertyDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.stpStatus.SuspendLayout();
 			this.stpMenu.SuspendLayout();
+			this.stpTool.SuspendLayout();
 			this.panMain.SuspendLayout();
 			this.panProperties.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.grdProperties)).BeginInit();
 			this.panFields.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.updQuantity)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picImage)).BeginInit();
+			this.ctmProperty.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// stpStatus
@@ -100,6 +119,12 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.tslSeparator1.Name = "tslSeparator1";
 			this.tslSeparator1.Size = new System.Drawing.Size(452, 17);
 			this.tslSeparator1.Spring = true;
+			// 
+			// tslID
+			// 
+			this.tslID.Name = "tslID";
+			this.tslID.Size = new System.Drawing.Size(31, 17);
+			this.tslID.Text = "New";
 			// 
 			// stpMenu
 			// 
@@ -128,32 +153,44 @@ namespace PartsCatalog.DesktopForms.Views {
 			// 
 			// refreshToolStripMenuItem
 			// 
+			this.refreshToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStripMenuItem.Image")));
 			this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-			this.refreshToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+			this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+			this.refreshToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
 			this.refreshToolStripMenuItem.Text = "Refresh";
+			this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(121, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(163, 6);
 			// 
 			// duplicateToolStripMenuItem
 			// 
+			this.duplicateToolStripMenuItem.Enabled = false;
+			this.duplicateToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("duplicateToolStripMenuItem.Image")));
 			this.duplicateToolStripMenuItem.Name = "duplicateToolStripMenuItem";
-			this.duplicateToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+			this.duplicateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+			this.duplicateToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
 			this.duplicateToolStripMenuItem.Text = "Duplicate";
 			// 
 			// saveToolStripMenuItem
 			// 
+			this.saveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.Image")));
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
 			this.saveToolStripMenuItem.Text = "Save";
+			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem
 			// 
+			this.deleteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("deleteToolStripMenuItem.Image")));
 			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+			this.deleteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Delete)));
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
 			this.deleteToolStripMenuItem.Text = "Delete";
+			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
 			// 
 			// imageToolStripMenuItem
 			// 
@@ -161,6 +198,7 @@ namespace PartsCatalog.DesktopForms.Views {
             this.browseToolStripMenuItem,
             this.toolStripMenuItem2,
             this.deleteToolStripMenuItem1});
+			this.imageToolStripMenuItem.Enabled = false;
 			this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
 			this.imageToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
 			this.imageToolStripMenuItem.Text = "Image";
@@ -189,31 +227,37 @@ namespace PartsCatalog.DesktopForms.Views {
             this.deleteToolStripMenuItem2,
             this.toolStripMenuItem3,
             this.downloadToolStripMenuItem});
+			this.datasheetToolStripMenuItem.Enabled = false;
 			this.datasheetToolStripMenuItem.Name = "datasheetToolStripMenuItem";
 			this.datasheetToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
 			this.datasheetToolStripMenuItem.Text = "Datasheet";
 			// 
 			// openToolStripMenuItem
 			// 
+			this.openToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem.Image")));
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+			this.openToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
 			this.openToolStripMenuItem.Text = "Open...";
 			// 
 			// deleteToolStripMenuItem2
 			// 
+			this.deleteToolStripMenuItem2.Image = ((System.Drawing.Image)(resources.GetObject("deleteToolStripMenuItem2.Image")));
 			this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
-			this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(137, 22);
+			this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(156, 22);
 			this.deleteToolStripMenuItem2.Text = "Delete";
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(134, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(153, 6);
 			// 
 			// downloadToolStripMenuItem
 			// 
+			this.downloadToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("downloadToolStripMenuItem.Image")));
 			this.downloadToolStripMenuItem.Name = "downloadToolStripMenuItem";
-			this.downloadToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+			this.downloadToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
+			this.downloadToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
 			this.downloadToolStripMenuItem.Text = "Download...";
 			// 
 			// propertyToolStripMenuItem
@@ -229,34 +273,169 @@ namespace PartsCatalog.DesktopForms.Views {
 			// 
 			// addToolStripMenuItem
 			// 
+			this.addToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addToolStripMenuItem.Image")));
 			this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-			this.addToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.addToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
+			this.addToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.addToolStripMenuItem.Text = "Add...";
+			this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
 			// 
 			// editToolStripMenuItem
 			// 
+			this.editToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("editToolStripMenuItem.Image")));
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-			this.editToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.editToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.editToolStripMenuItem.Text = "Edit...";
+			this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem4
 			// 
 			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(104, 6);
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(121, 6);
 			// 
 			// deleteToolStripMenuItem3
 			// 
+			this.deleteToolStripMenuItem3.Image = ((System.Drawing.Image)(resources.GetObject("deleteToolStripMenuItem3.Image")));
 			this.deleteToolStripMenuItem3.Name = "deleteToolStripMenuItem3";
-			this.deleteToolStripMenuItem3.Size = new System.Drawing.Size(107, 22);
+			this.deleteToolStripMenuItem3.Size = new System.Drawing.Size(124, 22);
 			this.deleteToolStripMenuItem3.Text = "Delete";
+			this.deleteToolStripMenuItem3.Click += new System.EventHandler(this.deleteToolStripMenuItem3_Click);
 			// 
 			// stpTool
 			// 
+			this.stpTool.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshToolStripButton,
+            this.toolStripSeparator1,
+            this.duplicateToolStripButton,
+            this.saveToolStripButton,
+            this.deleteToolStripButton,
+            this.toolStripSeparator2,
+            this.showDatasheetToolStripButton,
+            this.deleteDatasheetToolStripButton,
+            this.downloadDatasheetToolStripButton,
+            this.toolStripSeparator3,
+            this.addPropertyToolStripButton,
+            this.editPropertyToolStripButton,
+            this.deletePropertyToolStripButton});
 			this.stpTool.Location = new System.Drawing.Point(0, 24);
 			this.stpTool.Name = "stpTool";
 			this.stpTool.Size = new System.Drawing.Size(569, 25);
 			this.stpTool.TabIndex = 2;
 			this.stpTool.Text = "toolStrip1";
+			// 
+			// refreshToolStripButton
+			// 
+			this.refreshToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.refreshToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStripButton.Image")));
+			this.refreshToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.refreshToolStripButton.Name = "refreshToolStripButton";
+			this.refreshToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.refreshToolStripButton.Text = "Refresh";
+			this.refreshToolStripButton.Click += new System.EventHandler(this.refreshToolStripButton_Click);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			// 
+			// duplicateToolStripButton
+			// 
+			this.duplicateToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.duplicateToolStripButton.Enabled = false;
+			this.duplicateToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("duplicateToolStripButton.Image")));
+			this.duplicateToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.duplicateToolStripButton.Name = "duplicateToolStripButton";
+			this.duplicateToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.duplicateToolStripButton.Text = "Duplicate";
+			// 
+			// saveToolStripButton
+			// 
+			this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+			this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.saveToolStripButton.Name = "saveToolStripButton";
+			this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.saveToolStripButton.Text = "Save";
+			// 
+			// deleteToolStripButton
+			// 
+			this.deleteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.deleteToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteToolStripButton.Image")));
+			this.deleteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.deleteToolStripButton.Name = "deleteToolStripButton";
+			this.deleteToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.deleteToolStripButton.Text = "Delete";
+			this.deleteToolStripButton.Click += new System.EventHandler(this.deleteToolStripButton_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// showDatasheetToolStripButton
+			// 
+			this.showDatasheetToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.showDatasheetToolStripButton.Enabled = false;
+			this.showDatasheetToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("showDatasheetToolStripButton.Image")));
+			this.showDatasheetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.showDatasheetToolStripButton.Name = "showDatasheetToolStripButton";
+			this.showDatasheetToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.showDatasheetToolStripButton.Text = "Open Datasheet";
+			// 
+			// deleteDatasheetToolStripButton
+			// 
+			this.deleteDatasheetToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.deleteDatasheetToolStripButton.Enabled = false;
+			this.deleteDatasheetToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteDatasheetToolStripButton.Image")));
+			this.deleteDatasheetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.deleteDatasheetToolStripButton.Name = "deleteDatasheetToolStripButton";
+			this.deleteDatasheetToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.deleteDatasheetToolStripButton.Text = "Delete Datasheet";
+			// 
+			// downloadDatasheetToolStripButton
+			// 
+			this.downloadDatasheetToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.downloadDatasheetToolStripButton.Enabled = false;
+			this.downloadDatasheetToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("downloadDatasheetToolStripButton.Image")));
+			this.downloadDatasheetToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.downloadDatasheetToolStripButton.Name = "downloadDatasheetToolStripButton";
+			this.downloadDatasheetToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.downloadDatasheetToolStripButton.Text = "Download Datasheet";
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// addPropertyToolStripButton
+			// 
+			this.addPropertyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.addPropertyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("addPropertyToolStripButton.Image")));
+			this.addPropertyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.addPropertyToolStripButton.Name = "addPropertyToolStripButton";
+			this.addPropertyToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.addPropertyToolStripButton.Text = "Add Property";
+			this.addPropertyToolStripButton.Click += new System.EventHandler(this.addPropertyToolStripButton_Click);
+			// 
+			// editPropertyToolStripButton
+			// 
+			this.editPropertyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.editPropertyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("editPropertyToolStripButton.Image")));
+			this.editPropertyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.editPropertyToolStripButton.Name = "editPropertyToolStripButton";
+			this.editPropertyToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.editPropertyToolStripButton.Text = "Edit Property";
+			this.editPropertyToolStripButton.Click += new System.EventHandler(this.editPropertyToolStripButton_Click);
+			// 
+			// deletePropertyToolStripButton
+			// 
+			this.deletePropertyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.deletePropertyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("deletePropertyToolStripButton.Image")));
+			this.deletePropertyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.deletePropertyToolStripButton.Name = "deletePropertyToolStripButton";
+			this.deletePropertyToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.deletePropertyToolStripButton.Text = "Delete Property";
+			this.deletePropertyToolStripButton.Click += new System.EventHandler(this.deletePropertyToolStripButton_Click);
 			// 
 			// panMain
 			// 
@@ -294,8 +473,11 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.grdProperties.Name = "grdProperties";
 			this.grdProperties.ReadOnly = true;
 			this.grdProperties.RowHeadersVisible = false;
+			this.grdProperties.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.grdProperties.Size = new System.Drawing.Size(398, 201);
 			this.grdProperties.TabIndex = 0;
+			this.grdProperties.MouseClick += new System.Windows.Forms.MouseEventHandler(this.grdProperties_MouseClick);
+			this.grdProperties.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.grdProperties_CellMouseDoubleClick);
 			// 
 			// panFields
 			// 
@@ -451,11 +633,27 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.picImage.TabIndex = 0;
 			this.picImage.TabStop = false;
 			// 
-			// tslID
+			// ctmProperty
 			// 
-			this.tslID.Name = "tslID";
-			this.tslID.Size = new System.Drawing.Size(31, 17);
-			this.tslID.Text = "New";
+			this.ctmProperty.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextPropertyEditToolStripMenuItem,
+            this.contextPropertyDeleteToolStripMenuItem});
+			this.ctmProperty.Name = "ctmProperty";
+			this.ctmProperty.Size = new System.Drawing.Size(108, 48);
+			// 
+			// contextPropertyEditToolStripMenuItem
+			// 
+			this.contextPropertyEditToolStripMenuItem.Name = "contextPropertyEditToolStripMenuItem";
+			this.contextPropertyEditToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.contextPropertyEditToolStripMenuItem.Text = "Edit...";
+			this.contextPropertyEditToolStripMenuItem.Click += new System.EventHandler(this.contextPropertyEditToolStripMenuItem_Click);
+			// 
+			// contextPropertyDeleteToolStripMenuItem
+			// 
+			this.contextPropertyDeleteToolStripMenuItem.Name = "contextPropertyDeleteToolStripMenuItem";
+			this.contextPropertyDeleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.contextPropertyDeleteToolStripMenuItem.Text = "Delete";
+			this.contextPropertyDeleteToolStripMenuItem.Click += new System.EventHandler(this.contextPropertyDeleteToolStripMenuItem_Click);
 			// 
 			// ComponentForm
 			// 
@@ -476,6 +674,8 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.stpStatus.PerformLayout();
 			this.stpMenu.ResumeLayout(false);
 			this.stpMenu.PerformLayout();
+			this.stpTool.ResumeLayout(false);
+			this.stpTool.PerformLayout();
 			this.panMain.ResumeLayout(false);
 			this.panProperties.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.grdProperties)).EndInit();
@@ -483,6 +683,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.panFields.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.updQuantity)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picImage)).EndInit();
+			this.ctmProperty.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -534,5 +735,21 @@ namespace PartsCatalog.DesktopForms.Views {
 		private System.Windows.Forms.ToolStripStatusLabel tslNotification;
 		private System.Windows.Forms.ToolStripStatusLabel tslSeparator1;
 		private System.Windows.Forms.ToolStripStatusLabel tslID;
+		private System.Windows.Forms.ContextMenuStrip ctmProperty;
+		private System.Windows.Forms.ToolStripMenuItem contextPropertyEditToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem contextPropertyDeleteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton refreshToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripButton duplicateToolStripButton;
+		private System.Windows.Forms.ToolStripButton saveToolStripButton;
+		private System.Windows.Forms.ToolStripButton deleteToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripButton showDatasheetToolStripButton;
+		private System.Windows.Forms.ToolStripButton deleteDatasheetToolStripButton;
+		private System.Windows.Forms.ToolStripButton downloadDatasheetToolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripButton addPropertyToolStripButton;
+		private System.Windows.Forms.ToolStripButton editPropertyToolStripButton;
+		private System.Windows.Forms.ToolStripButton deletePropertyToolStripButton;
 	}
 }

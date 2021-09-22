@@ -69,10 +69,13 @@ namespace PartsCatalog.DesktopForms.Views {
 			txtDescription.DataBindings.Clear();
 
 			// Bind data to fields.
-			updQuantity.DataBindings.Add("Value", AssociatedComponent, "Quantity");
-			txtName.DataBindings.Add("Text", AssociatedComponent, "Name");
-			txtDescription.DataBindings.Add("Text", AssociatedComponent, "Description");
-			grdProperties.DataSource = AssociatedComponent.Properties;
+			AssociatedComponent.Retrieve();
+			updQuantity.DataBindings.Add("Value", AssociatedComponent, "Quantity",
+				true, DataSourceUpdateMode.OnPropertyChanged);
+			txtName.DataBindings.Add("Text", AssociatedComponent, "Name", true,
+				DataSourceUpdateMode.OnPropertyChanged);
+			txtDescription.DataBindings.Add("Text", AssociatedComponent, "Description",
+				true, DataSourceUpdateMode.OnPropertyChanged);
 
 			// Deal with the lists.
 			PopulateCategoriesList();
@@ -83,7 +86,7 @@ namespace PartsCatalog.DesktopForms.Views {
 				cmbPackage.SelectedValue = AssociatedComponent.Package.ID;
 			}
 
-			// Refresh the properties table.
+			// Populate the properties table.
 			properties.Clear();
 			foreach (Property property in AssociatedComponent.Properties) {
 				properties.Add(property);
@@ -126,6 +129,72 @@ namespace PartsCatalog.DesktopForms.Views {
 		public void PopulatePackagesList() {
 			packages.Clear();
 			new Package().List(packages);
+		}
+
+		/// <summary>
+		/// Asks the user if they really want to delete the property and delete if
+		/// they actually want it.
+		/// </summary>
+		/// <param name="property">Property to be deleted.</param>
+		public void DeleteAssociatedComponent() {
+			DialogResult dialog = MessageBox.Show("Are you sure you want to delete " +
+				"the '" + AssociatedComponent.Name + "' component?",
+				"Delete component?", MessageBoxButtons.YesNo);
+
+			// Ignore if the user was mistaken.
+			if (dialog == DialogResult.No)
+				return;
+
+			// Delete the component from the remote server.
+			AssociatedComponent.Delete();
+		}
+
+		/// <summary>
+		/// Opens the dialog for adding a new property.
+		/// </summary>
+		public void AddProperty() {
+			Property property = new Property();
+			property.Parent = AssociatedComponent;
+
+			PropertyForm form = new PropertyForm(property);
+			form.StartPosition = FormStartPosition.CenterParent;
+			DialogResult result = form.ShowDialog(this);
+
+			// Append the new property to the lists if the user saved it.
+			if (result == DialogResult.Yes) {
+				AssociatedComponent.Properties.Add(property);
+				properties.Add(property);
+			}
+		}
+
+		/// <summary>
+		/// Opens the dialog for editing a selected property.
+		/// </summary>
+		/// <param name="property">Property to be edited.</param>
+		public void EditProperty(Property property) {
+			PropertyForm form = new PropertyForm(property);
+			form.StartPosition = FormStartPosition.CenterParent;
+			form.ShowDialog(this);
+		}
+
+		/// <summary>
+		/// Asks the user if they really want to delete the property and delete if
+		/// they actually want it.
+		/// </summary>
+		/// <param name="property">Property to be deleted.</param>
+		public void DeleteProperty(Property property) {
+			DialogResult dialog = MessageBox.Show("Are you sure you want to delete " +
+				"the property '" + property.Name + "'?", "Delete component property?",
+				MessageBoxButtons.YesNo);
+
+			// Ignore if the user was mistaken.
+			if (dialog == DialogResult.No)
+				return;
+
+			// Delete the property from the remote server and from the local lists.
+			property.Delete();
+			AssociatedComponent.Properties.Remove(property);
+			properties.Remove(property);
 		}
 
 		/// <summary>
@@ -179,6 +248,93 @@ namespace PartsCatalog.DesktopForms.Views {
 				return;
 
 			AssociatedComponent.Package = package;
+		}
+
+		private void grdProperties_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
+			Property property = (Property)grdProperties.CurrentRow.DataBoundItem;
+			EditProperty(property);
+		}
+
+		private void editToolStripMenuItem_Click(object sender, EventArgs e) {
+			Property property = (Property)grdProperties.CurrentRow.DataBoundItem;
+			if (property == null)
+				return;
+
+			EditProperty(property);
+		}
+
+		private void addToolStripMenuItem_Click(object sender, EventArgs e) {
+			AddProperty();
+		}
+
+		private void deleteToolStripMenuItem3_Click(object sender, EventArgs e) {
+			Property property = (Property)grdProperties.CurrentRow.DataBoundItem;
+			if (property == null)
+				return;
+
+			DeleteProperty(property);
+		}
+
+		private void contextPropertyEditToolStripMenuItem_Click(object sender, EventArgs e) {
+			editToolStripMenuItem_Click(sender, e);
+		}
+
+		private void contextPropertyDeleteToolStripMenuItem_Click(object sender, EventArgs e) {
+			deleteToolStripMenuItem3_Click(sender, e);
+		}
+
+		private void grdProperties_MouseClick(object sender, MouseEventArgs e) {
+			// Select the row where the right button was clicked and show the context menu.
+			if (e.Button == MouseButtons.Right) {
+				int row = grdProperties.HitTest(e.X, e.Y).RowIndex;
+
+				// Check if we actually were hovering a row.
+				if (row == -1)
+					return;
+
+				grdProperties.ClearSelection();
+				grdProperties.Rows[row].Selected = true;
+				grdProperties.CurrentCell = grdProperties.Rows[row].Cells[0];
+				ctmProperty.Show((Control)sender, new Point(e.X, e.Y));
+			}
+		}
+
+		private void refreshToolStripMenuItem_Click(object sender, EventArgs e) {
+			PopulateWithComponent();
+		}
+
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e) {
+			AssociatedComponent.Save();
+			PopulateWithComponent();
+		}
+
+		private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
+			DeleteAssociatedComponent();
+			Close();
+		}
+
+		private void refreshToolStripButton_Click(object sender, EventArgs e) {
+			refreshToolStripMenuItem_Click(sender, e);
+		}
+
+		private void saveToolStripButton_Click(object sender, EventArgs e) {
+			saveToolStripMenuItem_Click(sender, e);
+		}
+
+		private void deleteToolStripButton_Click(object sender, EventArgs e) {
+			deleteToolStripMenuItem_Click(sender, e);
+		}
+
+		private void addPropertyToolStripButton_Click(object sender, EventArgs e) {
+			addToolStripMenuItem_Click(sender, e);
+		}
+
+		private void editPropertyToolStripButton_Click(object sender, EventArgs e) {
+			editToolStripMenuItem_Click(sender, e);
+		}
+
+		private void deletePropertyToolStripButton_Click(object sender, EventArgs e) {
+			deleteToolStripMenuItem3_Click(sender, e);
 		}
 	}
 }
