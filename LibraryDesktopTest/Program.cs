@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using PartsCatalog.Models;
-using PartsCatalog.DesktopForms;
+using PartsCatalog.DesktopForms.Views;
 
 namespace LibraryDesktopTest {
 	static class Program {

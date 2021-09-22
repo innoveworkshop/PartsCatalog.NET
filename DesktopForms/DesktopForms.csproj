@@ -35,16 +35,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComponentForm.cs">
+    <Compile Include="Views\ComponentForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ComponentForm.Designer.cs">
+    <Compile Include="Views\ComponentForm.Designer.cs">
       <DependentUpon>ComponentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ComponentForm.resx">
+    <EmbeddedResource Include="Views\ComponentForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ComponentForm.cs</DependentUpon>
     </EmbeddedResource>
