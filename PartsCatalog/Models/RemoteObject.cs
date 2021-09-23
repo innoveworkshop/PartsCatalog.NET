@@ -127,7 +127,7 @@ namespace PartsCatalog.Models {
 		/// <summary>
 		/// Deletes the entry from the remote database without affecting our local copy.
 		/// </summary>
-		public void Delete() {
+		public virtual void Delete() {
 			// Build the query URL.
 			URL url = new URL(BaseURL, Endpoint);
 			url.Parameters.Add("id", ID);

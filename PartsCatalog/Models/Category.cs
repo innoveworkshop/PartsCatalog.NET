@@ -84,6 +84,16 @@ namespace PartsCatalog.Models {
 			Persistent = PersistenceStatus.Loaded;
 		}
 
+		public override void Delete() {
+			// Delete this category's childs.
+			foreach (SubCategory subCategory in SubCategories) {
+				subCategory.Delete();
+			}
+
+			// Actually delete this.
+			base.Delete();
+		}
+
 		public override string ToString() {
 			return Name;
 		}
