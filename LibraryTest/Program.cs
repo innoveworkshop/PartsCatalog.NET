@@ -56,7 +56,7 @@ namespace LibraryTest {
 
 			// Test Component.
 			Console.WriteLine("Component:");
-			Component component = new Component(1);
+			Component component = new Component(2);
 			Console.WriteLine("ID: {0}", component.ID);
 			Console.WriteLine("Name: {0}", component.Name);
 			Console.WriteLine("Quantity: {0}", component.Quantity);
@@ -67,6 +67,20 @@ namespace LibraryTest {
 			Console.WriteLine("Properties:");
 			foreach (Property prop in component.Properties) {
 				Console.WriteLine("    - " + prop);
+			}
+			Console.WriteLine();
+
+			// Test Project.
+			Console.WriteLine("Project:");
+			Project project = new Project(1);
+			Console.WriteLine("ID: {0}", project.ID);
+			Console.WriteLine("Name: {0}", project.Name);
+			Console.WriteLine("Revision: {0}", project.Revision);
+			Console.WriteLine("Description: {0}", project.Description);
+			Console.WriteLine("BOM:");
+			foreach (BOMItem item in project.BOM) {
+				Console.WriteLine("    - " + item.Quantity + "x " + item.Part +
+					" [ " + String.Join(", ", item.RefDes.ToArray()) + " ]");
 			}
 			Console.WriteLine();
 
