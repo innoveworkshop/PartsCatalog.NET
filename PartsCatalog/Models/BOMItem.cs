@@ -51,13 +51,13 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
-			Quantity = int.Parse(doc.DocumentElement["quantity"].InnerText);
 			Part.ID = int.Parse(doc.DocumentElement["component"].GetAttribute("id"));
 			Parent.ID = int.Parse(doc.DocumentElement["project"].GetAttribute("id"));
 			RefDes.Clear();
 			foreach (XmlNode node in doc.DocumentElement["refdesignators"].ChildNodes) {
 				RefDes.Add(node.InnerText);
 			}
+			Quantity = int.Parse(doc.DocumentElement["quantity"].InnerText);
 
 			Persistent = PersistenceStatus.Loaded;
 		}
@@ -101,9 +101,9 @@ namespace PartsCatalog.Models {
 			// Build request body.
 			HttpRequestBody body = new HttpRequestBody();
 			body.Parameters.Add("quantity", Quantity);
-			body.Parameters.Add("refdes", String.Join(" ", RefDes.ToArray()));
-			body.Parameters.Add("component", Part);
-			body.Parameters.Add("project", Parent);
+			body.Parameters.Add("refdes", RefDesString);
+			body.Parameters.Add("component", Part.ID);
+			body.Parameters.Add("project", Parent.ID);
 			byte[] bodyBytes = body.GetBytes();
 
 			// Send the request and get the response from the server.
@@ -134,7 +134,23 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		public List<string> RefDes {
 			get { LazyLoad(); return _refDes; }
-			set { LazyLoad(); _refDes = value; }
+			set {
+				LazyLoad();
+				_refDes = value;
+				Quantity = _refDes.Count;
+			}
+		}
+
+		/// <summary>
+		/// BOM item reference designators as a string.
+		/// </summary>
+		public string RefDesString {
+			get { LazyLoad(); return String.Join(" ", _refDes.ToArray()); }
+			set {
+				LazyLoad();
+				_refDes = new List<string>(value.Split(' '));
+				Quantity = _refDes.Count;
+			}
 		}
 
 		/// <summary>

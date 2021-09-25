@@ -91,7 +91,7 @@ namespace PartsCatalog.Models {
 		}
 
 		public override string ToString() {
-			return Name;
+			return Name + " (Rev " + Revision + ")";
 		}
 
 		/// <summary>
