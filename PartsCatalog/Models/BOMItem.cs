@@ -11,7 +11,9 @@ namespace PartsCatalog.Models {
 	/// Project BOM item abstraction.
 	/// </summary>
 	public class BOMItem : RemoteObject<BOMItem> {
+		private bool _populate;
 		private int _quantity;
+		private string _value;
 		private List<string> _refDes;
 		private Component _component;
 		private Project _parent;
@@ -51,6 +53,8 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
+			Populate = Convert.ToBoolean(doc.DocumentElement.GetAttribute("populate"));
+			Value = doc.DocumentElement["value"].InnerText;
 			Part.ID = int.Parse(doc.DocumentElement["component"].GetAttribute("id"));
 			Parent.ID = int.Parse(doc.DocumentElement["project"].GetAttribute("id"));
 			RefDes.Clear();
@@ -100,6 +104,8 @@ namespace PartsCatalog.Models {
 
 			// Build request body.
 			HttpRequestBody body = new HttpRequestBody();
+			body.Parameters.Add("populate", Populate);
+			body.Parameters.Add("value", Value);
 			body.Parameters.Add("quantity", Quantity);
 			body.Parameters.Add("refdes", RefDesString);
 			body.Parameters.Add("component", Part.ID);
@@ -122,11 +128,27 @@ namespace PartsCatalog.Models {
 		}
 
 		/// <summary>
+		/// BOM item component should be populated?
+		/// </summary>
+		public bool Populate {
+			get { LazyLoad(); return _populate; }
+			set { LazyLoad(); _populate = value; }
+		}
+
+		/// <summary>
 		/// BOM item quantity.
 		/// </summary>
 		public int Quantity {
 			get { LazyLoad(); return _quantity; }
 			set { LazyLoad(); _quantity = value; }
+		}
+
+		/// <summary>
+		/// BOM item component value.
+		/// </summary>
+		public string Value {
+			get { LazyLoad(); return _value; }
+			set { LazyLoad(); _value = value; }
 		}
 
 		/// <summary>
