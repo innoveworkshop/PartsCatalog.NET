@@ -18,6 +18,7 @@ namespace PartsCatalog.Models {
 		private SubCategory _subcategory;
 		private Package _package;
 		private List<Property> _properties;
+		private Image _image;
 
 		/// <summary>
 		/// Creates an empty component object.
@@ -29,6 +30,7 @@ namespace PartsCatalog.Models {
 			SubCategory = new SubCategory();
 			Package = new Package();
 			Properties = new List<Property>();
+			Picture = new Image();
 		}
 
 		/// <summary>
@@ -89,6 +91,8 @@ namespace PartsCatalog.Models {
 			Category.ID = int.Parse(doc.DocumentElement["category"].GetAttribute("id"));
 			SubCategory.ID = int.Parse(doc.DocumentElement["subcategory"].GetAttribute("id"));
 			Package.ID = int.Parse(doc.DocumentElement["package"].GetAttribute("id"));
+			if (doc.DocumentElement["image"] != null)
+				Picture.ID = int.Parse(doc.DocumentElement["image"].GetAttribute("id"));
 			Properties.Clear();
 			foreach (XmlNode node in doc.DocumentElement["properties"].ChildNodes) {
 				Properties.Add(new Property(int.Parse(node.Attributes["id"].InnerText)));
@@ -224,6 +228,14 @@ namespace PartsCatalog.Models {
 		public List<Property> Properties {
 			get { LazyLoad(); return _properties; }
 			set { LazyLoad(); _properties = value; }
+		}
+
+		/// <summary>
+		/// Component image.
+		/// </summary>
+		public Image Picture {
+			get { LazyLoad(); return _image; }
+			set { LazyLoad(); _image = value; }
 		}
 	}
 }

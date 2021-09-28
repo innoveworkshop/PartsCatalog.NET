@@ -12,6 +12,7 @@ namespace PartsCatalog.Models {
 	/// </summary>
 	public class Package : RemoteObject<Package> {
 		private string _name;
+		private Image _image;
 
 		/// <summary>
 		/// Creates an empty package object.
@@ -19,6 +20,7 @@ namespace PartsCatalog.Models {
 		public Package() {
 			Endpoint = "/package";
 			Invalidate();
+			Picture = new Image();
 		}
 
 		/// <summary>
@@ -46,7 +48,9 @@ namespace PartsCatalog.Models {
 
 			// Populate the object.
 			Name = doc.DocumentElement["name"].InnerText;
-
+			if (doc.DocumentElement["image"] != null)
+				Picture.ID = int.Parse(doc.DocumentElement["image"].GetAttribute("id"));
+			
 			Persistent = PersistenceStatus.Loaded;
 		}
 
@@ -88,6 +92,14 @@ namespace PartsCatalog.Models {
 		public string Name {
 			get { LazyLoad(); return _name; }
 			set { LazyLoad(); _name = value; }
+		}
+
+		/// <summary>
+		/// Package image.
+		/// </summary>
+		public Image Picture {
+			get { LazyLoad(); return _image; }
+			set { LazyLoad(); _image = value; }
 		}
 	}
 }
