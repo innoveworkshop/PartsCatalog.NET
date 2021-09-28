@@ -624,7 +624,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			// 
 			// btnDatasheet
 			// 
-			this.btnDatasheet.Location = new System.Drawing.Point(26, 159);
+			this.btnDatasheet.Location = new System.Drawing.Point(29, 162);
 			this.btnDatasheet.Name = "btnDatasheet";
 			this.btnDatasheet.Size = new System.Drawing.Size(110, 23);
 			this.btnDatasheet.TabIndex = 1;
@@ -635,7 +635,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			// 
 			this.picImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.picImage.ContextMenuStrip = this.ctmImage;
-			this.picImage.Location = new System.Drawing.Point(6, 0);
+			this.picImage.Location = new System.Drawing.Point(9, 3);
 			this.picImage.Name = "picImage";
 			this.picImage.Size = new System.Drawing.Size(150, 150);
 			this.picImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
