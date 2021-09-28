@@ -141,8 +141,10 @@ namespace PartsCatalog.DesktopForms.Views {
 		/// <param name="retrieve">Should we retrieve the image object?</param>
 		public void PopulateComponentImage(bool retrieve) {
 			// Clear the image if there's already one in place.
-			if (picImage.Image != null)
+			if (picImage.Image != null) {
 				picImage.Image.Dispose();
+				picImage.Image = null;
+			}
 
 			// Retrieve the image object.
 			if (retrieve)
@@ -155,7 +157,7 @@ namespace PartsCatalog.DesktopForms.Views {
 				ms.Write(AssociatedComponent.Picture.FileContent, 0,
 					Convert.ToInt32(AssociatedComponent.Picture.FileContent.Length));
 				picImage.Image = System.Drawing.Image.FromStream(ms);
-
+				
 				ms.Dispose();
 			}
 		}
@@ -249,8 +251,16 @@ namespace PartsCatalog.DesktopForms.Views {
 		/// Deletes the component image from the form and the server.
 		/// </summary>
 		public void DeleteComponentImage() {
-			AssociatedComponent.Picture.Delete();
+			DialogResult dialog = MessageBox.Show("Are you sure you want to delete " +
+				"this component's image?", "Delete component image?",
+				MessageBoxButtons.YesNo);
 
+			// Ignore if the user was mistaken.
+			if (dialog == DialogResult.No)
+				return;
+
+			// Actually delete the image.
+			AssociatedComponent.Picture.Delete();
 			if (picImage.Image != null) {
 				picImage.Image.Dispose();
 				picImage.Image = null;
