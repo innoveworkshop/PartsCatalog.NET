@@ -43,6 +43,7 @@ namespace LibraryTest {
 			Package package = new Package(1);
 			Console.WriteLine("ID: {0}", package.ID);
 			Console.WriteLine("Name: {0}", package.Name);
+			Console.WriteLine("Image: {0}", package.Picture);
 			Console.WriteLine();
 
 			// Test Property.
@@ -64,6 +65,7 @@ namespace LibraryTest {
 			Console.WriteLine("Category: {0}", component.Category);
 			Console.WriteLine("Sub-Category: {0}", component.SubCategory);
 			Console.WriteLine("Package: {0}", component.Package);
+			Console.WriteLine("Image: {0}", component.Picture);
 			Console.WriteLine("Properties:");
 			foreach (Property prop in component.Properties) {
 				Console.WriteLine("    - " + prop);

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -92,6 +93,9 @@ namespace PartsCatalog.DesktopForms.Views {
 				properties.Add(property);
 			}
 
+			// Populate the component image.
+			PopulateComponentImage(true);
+
 			// Notify the user.
 			if (AssociatedComponent.IsPersistent()) {
 				Text = AssociatedComponent.Name;
@@ -129,6 +133,31 @@ namespace PartsCatalog.DesktopForms.Views {
 		public void PopulatePackagesList() {
 			packages.Clear();
 			new Package().List(packages);
+		}
+
+		/// <summary>
+		/// Populates the component image control.
+		/// </summary>
+		/// <param name="retrieve">Should we retrieve the image object?</param>
+		public void PopulateComponentImage(bool retrieve) {
+			// Clear the image if there's already one in place.
+			if (picImage.Image != null)
+				picImage.Image.Dispose();
+
+			// Retrieve the image object.
+			if (retrieve)
+				AssociatedComponent.Retrieve();
+
+			// Associate the image.
+			if (AssociatedComponent.Picture.HasImage()) {
+				MemoryStream ms = new MemoryStream();
+
+				ms.Write(AssociatedComponent.Picture.FileContent, 0,
+					Convert.ToInt32(AssociatedComponent.Picture.FileContent.Length));
+				picImage.Image = System.Drawing.Image.FromStream(ms);
+
+				ms.Dispose();
+			}
 		}
 
 		/// <summary>
@@ -195,6 +224,37 @@ namespace PartsCatalog.DesktopForms.Views {
 			property.Delete();
 			AssociatedComponent.Properties.Remove(property);
 			properties.Remove(property);
+		}
+
+		/// <summary>
+		/// Browses and selects a component image and uploads it to the server.
+		/// </summary>
+		public void SelectComponentImage() {
+			// Browse for a new component image.
+			if (dlgOpenImage.ShowDialog() != DialogResult.OK)
+				return;
+
+			// Set the component image and upload the file.
+			AssociatedComponent.Picture.AssociatedComponent =
+				new PartsCatalog.Models.Component(AssociatedComponent.ID);
+			AssociatedComponent.Picture.FileContent = File.ReadAllBytes(
+				dlgOpenImage.FileName);
+			AssociatedComponent.Picture.Save();
+
+			// Show the new image.
+			PopulateComponentImage(false);
+		}
+
+		/// <summary>
+		/// Deletes the component image from the form and the server.
+		/// </summary>
+		public void DeleteComponentImage() {
+			AssociatedComponent.Picture.Delete();
+
+			if (picImage.Image != null) {
+				picImage.Image.Dispose();
+				picImage.Image = null;
+			}
 		}
 
 		/// <summary>
@@ -335,6 +395,22 @@ namespace PartsCatalog.DesktopForms.Views {
 
 		private void deletePropertyToolStripButton_Click(object sender, EventArgs e) {
 			deleteToolStripMenuItem3_Click(sender, e);
+		}
+
+		private void browseToolStripMenuItem_Click(object sender, EventArgs e) {
+			SelectComponentImage();
+		}
+
+		private void deleteToolStripMenuItem1_Click(object sender, EventArgs e) {
+			DeleteComponentImage();
+		}
+
+		private void contextBrowseImageToolStripMenuItem_Click(object sender, EventArgs e) {
+			SelectComponentImage();
+		}
+
+		private void contextDeleteImageToolStripMenuItem_Click(object sender, EventArgs e) {
+			DeleteComponentImage();
 		}
 	}
 }
