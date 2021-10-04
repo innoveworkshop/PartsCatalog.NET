@@ -93,8 +93,9 @@ namespace PartsCatalog.DesktopForms.Views {
 				properties.Add(property);
 			}
 
-			// Populate the component image.
+			// Populate the component image and datasheet.
 			PopulateComponentImage(true);
+			PopulateComponentDatasheet(false);
 
 			// Notify the user.
 			if (AssociatedComponent.IsPersistent()) {
@@ -140,6 +141,10 @@ namespace PartsCatalog.DesktopForms.Views {
 		/// </summary>
 		/// <param name="retrieve">Should we retrieve the image object?</param>
 		public void PopulateComponentImage(bool retrieve) {
+			// Disables all of the controls when an image isn't associated.
+			deleteToolStripMenuItem1.Enabled = false;
+			contextDeleteImageToolStripMenuItem.Enabled = false;
+
 			// Clear the image if there's already one in place.
 			if (picImage.Image != null) {
 				picImage.Image.Dispose();
@@ -150,16 +155,43 @@ namespace PartsCatalog.DesktopForms.Views {
 			if (retrieve)
 				AssociatedComponent.Retrieve();
 
-			// Associate the image.
+			// Check if we actually have an image.
 			if (AssociatedComponent.Picture.HasImage()) {
+				// Associate the image.
 				MemoryStream ms = new MemoryStream();
-
 				ms.Write(AssociatedComponent.Picture.FileContent, 0,
 					Convert.ToInt32(AssociatedComponent.Picture.FileContent.Length));
 				picImage.Image = System.Drawing.Image.FromStream(ms);
-				
 				ms.Dispose();
+
+				// // Enables all of the controls.
+				deleteToolStripMenuItem1.Enabled = true;
+				contextDeleteImageToolStripMenuItem.Enabled = true;
 			}
+		}
+
+		/// <summary>
+		/// Populates the component datasheet controls.
+		/// </summary>
+		/// <param name="retrieve">Should we retrieve the datasheet object?</param>
+		public void PopulateComponentDatasheet(bool retrieve) {
+			// Disables all of the controls when a datasheet isn't associated.
+			btnDatasheet.Enabled = false;
+			openToolStripMenuItem.Enabled = false;
+			deleteToolStripMenuItem2.Enabled = false;
+
+			// Retrieve the datasheet object.
+			if (retrieve)
+				AssociatedComponent.Retrieve();
+
+			// Check if we actually have a datasheet available.
+			if (!AssociatedComponent.Datasheet.IsAvailable())
+				return;
+
+			// Enables all of the controls.
+			btnDatasheet.Enabled = true;
+			openToolStripMenuItem.Enabled = true;
+			deleteToolStripMenuItem2.Enabled = true;
 		}
 
 		/// <summary>
@@ -259,12 +291,43 @@ namespace PartsCatalog.DesktopForms.Views {
 			if (dialog == DialogResult.No)
 				return;
 
-			// Actually delete the image.
+			// Actually delete the image and update the controls.
 			AssociatedComponent.Picture.Delete();
-			if (picImage.Image != null) {
-				picImage.Image.Dispose();
-				picImage.Image = null;
-			}
+			PopulateComponentImage(false);
+		}
+
+		/// <summary>
+		/// Browses and selects a component datasheet and uploads it to the server.
+		/// </summary>
+		public void SelectComponentDatasheet() {
+			// Browse for a new component datasheet.
+			if (dlgOpenDatasheet.ShowDialog() != DialogResult.OK)
+				return;
+
+			// Set the component datasheet and upload the file.
+			AssociatedComponent.Datasheet.AssociatedComponent =
+				new PartsCatalog.Models.Component(AssociatedComponent.ID);
+			AssociatedComponent.Datasheet.Upload(dlgOpenDatasheet.FileName);
+
+			// Enable the datasheet controls.
+			PopulateComponentDatasheet(false);
+		}
+
+		/// <summary>
+		/// Deletes the component datasheet from the form and the server.
+		/// </summary>
+		public void DeleteComponentDatasheet() {
+			DialogResult dialog = MessageBox.Show("Are you sure you want to delete " +
+				"this component's datasheet?", "Delete component datasheet?",
+				MessageBoxButtons.YesNo);
+
+			// Ignore if the user was mistaken.
+			if (dialog == DialogResult.No)
+				return;
+
+			// Actually delete the datasheet and update the controls.
+			AssociatedComponent.Datasheet.Delete();
+			PopulateComponentDatasheet(false);
 		}
 
 		/// <summary>
@@ -421,6 +484,22 @@ namespace PartsCatalog.DesktopForms.Views {
 
 		private void contextDeleteImageToolStripMenuItem_Click(object sender, EventArgs e) {
 			DeleteComponentImage();
+		}
+
+		private void uploadToolStripMenuItem_Click(object sender, EventArgs e) {
+			SelectComponentDatasheet();
+		}
+
+		private void deleteToolStripMenuItem2_Click(object sender, EventArgs e) {
+			DeleteComponentDatasheet();
+		}
+
+		private void openToolStripMenuItem_Click(object sender, EventArgs e) {
+			AssociatedComponent.Datasheet.Open();
+		}
+
+		private void btnDatasheet_Click(object sender, EventArgs e) {
+			AssociatedComponent.Datasheet.Open();
 		}
 	}
 }

@@ -82,13 +82,14 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.lblQuantity = new System.Windows.Forms.Label();
 			this.btnDatasheet = new System.Windows.Forms.Button();
 			this.picImage = new System.Windows.Forms.PictureBox();
+			this.ctmImage = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.contextBrowseImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.contextDeleteImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.ctmProperty = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.contextPropertyEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextPropertyDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dlgOpenImage = new System.Windows.Forms.OpenFileDialog();
-			this.ctmImage = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.contextBrowseImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.contextDeleteImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.dlgOpenDatasheet = new System.Windows.Forms.OpenFileDialog();
 			this.stpStatus.SuspendLayout();
 			this.stpMenu.SuspendLayout();
 			this.stpTool.SuspendLayout();
@@ -98,8 +99,8 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.panFields.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.updQuantity)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picImage)).BeginInit();
-			this.ctmProperty.SuspendLayout();
 			this.ctmImage.SuspendLayout();
+			this.ctmProperty.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// stpStatus
@@ -210,20 +211,20 @@ namespace PartsCatalog.DesktopForms.Views {
 			// 
 			this.browseToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("browseToolStripMenuItem.Image")));
 			this.browseToolStripMenuItem.Name = "browseToolStripMenuItem";
-			this.browseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.browseToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
 			this.browseToolStripMenuItem.Text = "Browse...";
 			this.browseToolStripMenuItem.Click += new System.EventHandler(this.browseToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(118, 6);
 			// 
 			// deleteToolStripMenuItem1
 			// 
 			this.deleteToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("deleteToolStripMenuItem1.Image")));
 			this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-			this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
 			this.deleteToolStripMenuItem1.Text = "Delete";
 			this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
 			// 
@@ -234,7 +235,6 @@ namespace PartsCatalog.DesktopForms.Views {
             this.deleteToolStripMenuItem2,
             this.toolStripMenuItem3,
             this.uploadToolStripMenuItem});
-			this.datasheetToolStripMenuItem.Enabled = false;
 			this.datasheetToolStripMenuItem.Name = "datasheetToolStripMenuItem";
 			this.datasheetToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
 			this.datasheetToolStripMenuItem.Text = "Datasheet";
@@ -246,6 +246,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.openToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
 			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.openToolStripMenuItem.Text = "Open...";
+			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem2
 			// 
@@ -253,11 +254,12 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
 			this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
 			this.deleteToolStripMenuItem2.Text = "Delete";
+			this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.deleteToolStripMenuItem2_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(137, 6);
 			// 
 			// uploadToolStripMenuItem
 			// 
@@ -266,6 +268,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.uploadToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
 			this.uploadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.uploadToolStripMenuItem.Text = "Upload...";
+			this.uploadToolStripMenuItem.Click += new System.EventHandler(this.uploadToolStripMenuItem_Click);
 			// 
 			// propertyToolStripMenuItem
 			// 
@@ -283,7 +286,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.addToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addToolStripMenuItem.Image")));
 			this.addToolStripMenuItem.Name = "addToolStripMenuItem";
 			this.addToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-			this.addToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.addToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.addToolStripMenuItem.Text = "Add...";
 			this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
 			// 
@@ -291,20 +294,20 @@ namespace PartsCatalog.DesktopForms.Views {
 			// 
 			this.editToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("editToolStripMenuItem.Image")));
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-			this.editToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.editToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
 			this.editToolStripMenuItem.Text = "Edit...";
 			this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem4
 			// 
 			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(149, 6);
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(121, 6);
 			// 
 			// deleteToolStripMenuItem3
 			// 
 			this.deleteToolStripMenuItem3.Image = ((System.Drawing.Image)(resources.GetObject("deleteToolStripMenuItem3.Image")));
 			this.deleteToolStripMenuItem3.Name = "deleteToolStripMenuItem3";
-			this.deleteToolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+			this.deleteToolStripMenuItem3.Size = new System.Drawing.Size(124, 22);
 			this.deleteToolStripMenuItem3.Text = "Delete";
 			this.deleteToolStripMenuItem3.Click += new System.EventHandler(this.deleteToolStripMenuItem3_Click);
 			// 
@@ -630,6 +633,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.btnDatasheet.TabIndex = 1;
 			this.btnDatasheet.Text = "Datasheet";
 			this.btnDatasheet.UseVisualStyleBackColor = true;
+			this.btnDatasheet.Click += new System.EventHandler(this.btnDatasheet_Click);
 			// 
 			// picImage
 			// 
@@ -641,6 +645,30 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.picImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.picImage.TabIndex = 0;
 			this.picImage.TabStop = false;
+			// 
+			// ctmImage
+			// 
+			this.ctmImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextBrowseImageToolStripMenuItem,
+            this.contextDeleteImageToolStripMenuItem});
+			this.ctmImage.Name = "ctmImage";
+			this.ctmImage.Size = new System.Drawing.Size(122, 48);
+			// 
+			// contextBrowseImageToolStripMenuItem
+			// 
+			this.contextBrowseImageToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("contextBrowseImageToolStripMenuItem.Image")));
+			this.contextBrowseImageToolStripMenuItem.Name = "contextBrowseImageToolStripMenuItem";
+			this.contextBrowseImageToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+			this.contextBrowseImageToolStripMenuItem.Text = "Browse...";
+			this.contextBrowseImageToolStripMenuItem.Click += new System.EventHandler(this.contextBrowseImageToolStripMenuItem_Click);
+			// 
+			// contextDeleteImageToolStripMenuItem
+			// 
+			this.contextDeleteImageToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("contextDeleteImageToolStripMenuItem.Image")));
+			this.contextDeleteImageToolStripMenuItem.Name = "contextDeleteImageToolStripMenuItem";
+			this.contextDeleteImageToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+			this.contextDeleteImageToolStripMenuItem.Text = "Delete";
+			this.contextDeleteImageToolStripMenuItem.Click += new System.EventHandler(this.contextDeleteImageToolStripMenuItem_Click);
 			// 
 			// ctmProperty
 			// 
@@ -671,29 +699,10 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.dlgOpenImage.Filter = resources.GetString("dlgOpenImage.Filter");
 			this.dlgOpenImage.Title = "Upload Component Image";
 			// 
-			// ctmImage
+			// dlgOpenDatasheet
 			// 
-			this.ctmImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.contextBrowseImageToolStripMenuItem,
-            this.contextDeleteImageToolStripMenuItem});
-			this.ctmImage.Name = "ctmImage";
-			this.ctmImage.Size = new System.Drawing.Size(122, 48);
-			// 
-			// contextBrowseImageToolStripMenuItem
-			// 
-			this.contextBrowseImageToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("contextBrowseImageToolStripMenuItem.Image")));
-			this.contextBrowseImageToolStripMenuItem.Name = "contextBrowseImageToolStripMenuItem";
-			this.contextBrowseImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.contextBrowseImageToolStripMenuItem.Text = "Browse...";
-			this.contextBrowseImageToolStripMenuItem.Click += new System.EventHandler(this.contextBrowseImageToolStripMenuItem_Click);
-			// 
-			// contextDeleteImageToolStripMenuItem
-			// 
-			this.contextDeleteImageToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("contextDeleteImageToolStripMenuItem.Image")));
-			this.contextDeleteImageToolStripMenuItem.Name = "contextDeleteImageToolStripMenuItem";
-			this.contextDeleteImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.contextDeleteImageToolStripMenuItem.Text = "Delete";
-			this.contextDeleteImageToolStripMenuItem.Click += new System.EventHandler(this.contextDeleteImageToolStripMenuItem_Click);
+			this.dlgOpenDatasheet.Filter = "Portable Document Format (*.pdf)|*.pdf|All Files (*.*)|*.*";
+			this.dlgOpenDatasheet.Title = "Upload Component Datasheet";
 			// 
 			// ComponentForm
 			// 
@@ -723,8 +732,8 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.panFields.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.updQuantity)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picImage)).EndInit();
-			this.ctmProperty.ResumeLayout(false);
 			this.ctmImage.ResumeLayout(false);
+			this.ctmProperty.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -796,5 +805,6 @@ namespace PartsCatalog.DesktopForms.Views {
 		private System.Windows.Forms.ContextMenuStrip ctmImage;
 		private System.Windows.Forms.ToolStripMenuItem contextBrowseImageToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem contextDeleteImageToolStripMenuItem;
+		private System.Windows.Forms.OpenFileDialog dlgOpenDatasheet;
 	}
 }
