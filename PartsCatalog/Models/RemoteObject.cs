@@ -14,7 +14,7 @@ namespace PartsCatalog.Models {
 		/// <summary>
 		/// Base URL where the PartsCatalog web service is located at.
 		/// </summary>
-		protected const string BaseURL = "http://blueberry.farm.lan:8080/PartsCatalog";
+		protected const string BaseURL = Configuration.BaseURL;
 		private string _endpoint;
 		private int _id = -1;
 		private PersistenceStatus _persistent = PersistenceStatus.Creating;
