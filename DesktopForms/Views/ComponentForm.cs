@@ -501,5 +501,9 @@ namespace PartsCatalog.DesktopForms.Views {
 		private void btnDatasheet_Click(object sender, EventArgs e) {
 			AssociatedComponent.Datasheet.Open();
 		}
+
+		private void ComponentForm_Load(object sender, EventArgs e) {
+			tslServer.Text = PartsCatalog.Configuration.Domain;
+		}
 	}
 }

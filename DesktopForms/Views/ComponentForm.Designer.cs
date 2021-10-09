@@ -27,7 +27,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ComponentForm));
 			this.stpStatus = new System.Windows.Forms.StatusStrip();
 			this.tslNotification = new System.Windows.Forms.ToolStripStatusLabel();
-			this.tslSeparator1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.tslServer = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tslID = new System.Windows.Forms.ToolStripStatusLabel();
 			this.stpMenu = new System.Windows.Forms.MenuStrip();
 			this.componentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,7 +107,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			// 
 			this.stpStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslNotification,
-            this.tslSeparator1,
+            this.tslServer,
             this.tslID});
 			this.stpStatus.Location = new System.Drawing.Point(0, 395);
 			this.stpStatus.Name = "stpStatus";
@@ -120,11 +120,12 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.tslNotification.Size = new System.Drawing.Size(71, 17);
 			this.tslNotification.Text = "Component";
 			// 
-			// tslSeparator1
+			// tslServer
 			// 
-			this.tslSeparator1.Name = "tslSeparator1";
-			this.tslSeparator1.Size = new System.Drawing.Size(452, 17);
-			this.tslSeparator1.Spring = true;
+			this.tslServer.Name = "tslServer";
+			this.tslServer.Size = new System.Drawing.Size(452, 17);
+			this.tslServer.Spring = true;
+			this.tslServer.Text = "Server Name";
 			// 
 			// tslID
 			// 
@@ -244,7 +245,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.openToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem.Image")));
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
 			this.openToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
 			this.openToolStripMenuItem.Text = "Open...";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
@@ -252,7 +253,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			// 
 			this.deleteToolStripMenuItem2.Image = ((System.Drawing.Image)(resources.GetObject("deleteToolStripMenuItem2.Image")));
 			this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
-			this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+			this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(140, 22);
 			this.deleteToolStripMenuItem2.Text = "Delete";
 			this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.deleteToolStripMenuItem2_Click);
 			// 
@@ -266,7 +267,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.uploadToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("uploadToolStripMenuItem.Image")));
 			this.uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
 			this.uploadToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-			this.uploadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.uploadToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
 			this.uploadToolStripMenuItem.Text = "Upload...";
 			this.uploadToolStripMenuItem.Click += new System.EventHandler(this.uploadToolStripMenuItem_Click);
 			// 
@@ -719,6 +720,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.Name = "ComponentForm";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Text = "Component";
+			this.Load += new System.EventHandler(this.ComponentForm_Load);
 			this.stpStatus.ResumeLayout(false);
 			this.stpStatus.PerformLayout();
 			this.stpMenu.ResumeLayout(false);
@@ -783,7 +785,7 @@ namespace PartsCatalog.DesktopForms.Views {
 		private System.Windows.Forms.Panel panProperties;
 		private System.Windows.Forms.DataGridView grdProperties;
 		private System.Windows.Forms.ToolStripStatusLabel tslNotification;
-		private System.Windows.Forms.ToolStripStatusLabel tslSeparator1;
+		private System.Windows.Forms.ToolStripStatusLabel tslServer;
 		private System.Windows.Forms.ToolStripStatusLabel tslID;
 		private System.Windows.Forms.ContextMenuStrip ctmProperty;
 		private System.Windows.Forms.ToolStripMenuItem contextPropertyEditToolStripMenuItem;
