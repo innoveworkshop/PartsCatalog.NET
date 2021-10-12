@@ -75,5 +75,16 @@ namespace PartsCatalog.Utilities {
 
 			return bytesProcessed;
 		}
+
+		/// <summary>
+		/// Checks if a specific path points to a regular file as defined
+		/// by <see cref="FileAttributes.Normal"/>.
+		/// </summary>
+		/// <param name="filePath">Path to the file to be tested.</param>
+		/// <returns>True if the path points to a regular file.</returns>
+		public static bool IsFile(string filePath) {
+			FileAttributes attr = File.GetAttributes(filePath);
+			return (attr & FileAttributes.Normal) == FileAttributes.Normal;
+		}
 	}
 }

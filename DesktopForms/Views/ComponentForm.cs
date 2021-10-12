@@ -26,6 +26,9 @@ namespace PartsCatalog.DesktopForms.Views {
 			subCategories = new BindingList<SubCategory>();
 			packages = new BindingList<Package>();
 
+			// Allow drag and drop of an image.
+			picImage.AllowDrop = true;
+
 			// Setup data bindings for the combo boxes.
 			cmbCategory.DataSource = categories;
 			cmbCategory.DisplayMember = "Name";
@@ -261,6 +264,21 @@ namespace PartsCatalog.DesktopForms.Views {
 		}
 
 		/// <summary>
+		/// Sets the component image and uploads it to the server.
+		/// </summary>
+		/// <param name="filePath">Image file to be uploaded.</param>
+		public void SetComponentImage(string filePath) {
+			// Set the component image and upload the file.
+			AssociatedComponent.Picture.AssociatedComponent =
+				new PartsCatalog.Models.Component(AssociatedComponent.ID);
+			AssociatedComponent.Picture.FileContent = File.ReadAllBytes(filePath);
+			AssociatedComponent.Picture.Save();
+
+			// Show the new image.
+			PopulateComponentImage(false);
+		}
+
+		/// <summary>
 		/// Browses and selects a component image and uploads it to the server.
 		/// </summary>
 		public void SelectComponentImage() {
@@ -269,14 +287,7 @@ namespace PartsCatalog.DesktopForms.Views {
 				return;
 
 			// Set the component image and upload the file.
-			AssociatedComponent.Picture.AssociatedComponent =
-				new PartsCatalog.Models.Component(AssociatedComponent.ID);
-			AssociatedComponent.Picture.FileContent = File.ReadAllBytes(
-				dlgOpenImage.FileName);
-			AssociatedComponent.Picture.Save();
-
-			// Show the new image.
-			PopulateComponentImage(false);
+			SetComponentImage(dlgOpenImage.FileName);
 		}
 
 		/// <summary>
@@ -504,6 +515,22 @@ namespace PartsCatalog.DesktopForms.Views {
 
 		private void ComponentForm_Load(object sender, EventArgs e) {
 			tslServer.Text = PartsCatalog.Configuration.Domain;
+		}
+
+		private void picImage_DragEnter(object sender, DragEventArgs e) {
+			// Display a nice copy effect if we actually have a file being dropped.
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Effect = DragDropEffects.Copy;
+		}
+
+		private void picImage_DragDrop(object sender, DragEventArgs e) {
+			// Get the file and check if we only have a single one.
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			if (files.Length > 1)
+				throw new Exception("Only a single file should be dragged and dropped");
+
+			// Associate the new image.
+			SetComponentImage(files[0]);
 		}
 	}
 }
