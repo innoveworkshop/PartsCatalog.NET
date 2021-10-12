@@ -1,6 +1,7 @@
 # PartsCatalog.NET
 
-A .NET library to utilize the PartsCatalog web service.
+A .NET library to consume the
+[PartsCatalog web service](https://github.com/innoveworkshop/PartsCatalog-WS).
 
 ## License
 
