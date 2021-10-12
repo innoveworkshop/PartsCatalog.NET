@@ -170,6 +170,17 @@ namespace PartsCatalog.DesktopForms.Views {
 				// // Enables all of the controls.
 				deleteToolStripMenuItem1.Enabled = true;
 				contextDeleteImageToolStripMenuItem.Enabled = true;
+			} else {
+				// Check if we have a package image instead.
+				AssociatedComponent.Package.Retrieve();
+				if (AssociatedComponent.Package.Picture.HasImage()) {
+					// Associate the image.
+					MemoryStream ms = new MemoryStream();
+					ms.Write(AssociatedComponent.Package.Picture.FileContent, 0,
+						Convert.ToInt32(AssociatedComponent.Package.Picture.FileContent.Length));
+					picImage.Image = System.Drawing.Image.FromStream(ms);
+					ms.Dispose();
+				}
 			}
 		}
 
