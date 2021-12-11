@@ -32,6 +32,16 @@ namespace PartsCatalog.Models {
 			ID = id;
 		}
 
+		/// <summary>
+		/// Creates a new property with its name and value pre-populated.
+		/// </summary>
+		/// <param name="name">Property name.</param>
+		/// <param name="value">Property value.</param>
+		public Property(string name, string value) : this() {
+			Name = name;
+			Value = value;
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
