@@ -85,9 +85,6 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.ctmImage = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.contextBrowseImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextDeleteImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.ctmProperty = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.contextPropertyEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.contextPropertyDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dlgOpenImage = new System.Windows.Forms.OpenFileDialog();
 			this.dlgOpenDatasheet = new System.Windows.Forms.OpenFileDialog();
 			this.stpStatus.SuspendLayout();
@@ -100,7 +97,6 @@ namespace PartsCatalog.DesktopForms.Views {
 			((System.ComponentModel.ISupportInitialize)(this.updQuantity)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picImage)).BeginInit();
 			this.ctmImage.SuspendLayout();
-			this.ctmProperty.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// stpStatus
@@ -487,8 +483,6 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.grdProperties.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.grdProperties.Size = new System.Drawing.Size(398, 201);
 			this.grdProperties.TabIndex = 0;
-			this.grdProperties.MouseClick += new System.Windows.Forms.MouseEventHandler(this.grdProperties_MouseClick);
-			this.grdProperties.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.grdProperties_CellMouseDoubleClick);
 			// 
 			// panFields
 			// 
@@ -540,7 +534,6 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.cmbPackage.Name = "cmbPackage";
 			this.cmbPackage.Size = new System.Drawing.Size(112, 21);
 			this.cmbPackage.TabIndex = 9;
-			this.cmbPackage.SelectedIndexChanged += new System.EventHandler(this.cmbPackage_SelectedIndexChanged);
 			// 
 			// lblPackage
 			// 
@@ -558,7 +551,6 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.cmbSubCategory.Name = "cmbSubCategory";
 			this.cmbSubCategory.Size = new System.Drawing.Size(137, 21);
 			this.cmbSubCategory.TabIndex = 7;
-			this.cmbSubCategory.SelectedIndexChanged += new System.EventHandler(this.cmbSubCategory_SelectedIndexChanged);
 			// 
 			// lblSubCategory
 			// 
@@ -576,7 +568,6 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.cmbCategory.Name = "cmbCategory";
 			this.cmbCategory.Size = new System.Drawing.Size(137, 21);
 			this.cmbCategory.TabIndex = 5;
-			this.cmbCategory.SelectedIndexChanged += new System.EventHandler(this.cmbCategory_SelectedIndexChanged);
 			// 
 			// lblCategory
 			// 
@@ -673,30 +664,6 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.contextDeleteImageToolStripMenuItem.Text = "Delete";
 			this.contextDeleteImageToolStripMenuItem.Click += new System.EventHandler(this.contextDeleteImageToolStripMenuItem_Click);
 			// 
-			// ctmProperty
-			// 
-			this.ctmProperty.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.contextPropertyEditToolStripMenuItem,
-            this.contextPropertyDeleteToolStripMenuItem});
-			this.ctmProperty.Name = "ctmProperty";
-			this.ctmProperty.Size = new System.Drawing.Size(108, 48);
-			// 
-			// contextPropertyEditToolStripMenuItem
-			// 
-			this.contextPropertyEditToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("contextPropertyEditToolStripMenuItem.Image")));
-			this.contextPropertyEditToolStripMenuItem.Name = "contextPropertyEditToolStripMenuItem";
-			this.contextPropertyEditToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-			this.contextPropertyEditToolStripMenuItem.Text = "Edit...";
-			this.contextPropertyEditToolStripMenuItem.Click += new System.EventHandler(this.contextPropertyEditToolStripMenuItem_Click);
-			// 
-			// contextPropertyDeleteToolStripMenuItem
-			// 
-			this.contextPropertyDeleteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("contextPropertyDeleteToolStripMenuItem.Image")));
-			this.contextPropertyDeleteToolStripMenuItem.Name = "contextPropertyDeleteToolStripMenuItem";
-			this.contextPropertyDeleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-			this.contextPropertyDeleteToolStripMenuItem.Text = "Delete";
-			this.contextPropertyDeleteToolStripMenuItem.Click += new System.EventHandler(this.contextPropertyDeleteToolStripMenuItem_Click);
-			// 
 			// dlgOpenImage
 			// 
 			this.dlgOpenImage.Filter = resources.GetString("dlgOpenImage.Filter");
@@ -737,7 +704,6 @@ namespace PartsCatalog.DesktopForms.Views {
 			((System.ComponentModel.ISupportInitialize)(this.updQuantity)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picImage)).EndInit();
 			this.ctmImage.ResumeLayout(false);
-			this.ctmProperty.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -789,9 +755,6 @@ namespace PartsCatalog.DesktopForms.Views {
 		private System.Windows.Forms.ToolStripStatusLabel tslNotification;
 		private System.Windows.Forms.ToolStripStatusLabel tslServer;
 		private System.Windows.Forms.ToolStripStatusLabel tslID;
-		private System.Windows.Forms.ContextMenuStrip ctmProperty;
-		private System.Windows.Forms.ToolStripMenuItem contextPropertyEditToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem contextPropertyDeleteToolStripMenuItem;
 		private System.Windows.Forms.ToolStripButton refreshToolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton duplicateToolStripButton;
