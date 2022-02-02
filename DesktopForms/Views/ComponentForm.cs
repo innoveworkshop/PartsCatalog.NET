@@ -149,7 +149,7 @@ namespace PartsCatalog.DesktopForms.Views {
 		public void DeleteAssociatedComponent() {
 			DialogResult dialog = MessageBox.Show("Are you sure you want to delete " +
 				"the '" + AssociatedComponent.Name + "' component?",
-				"Delete component?", MessageBoxButtons.YesNo);
+				"Delete component?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
 			// Ignore if the user was mistaken.
 			if (dialog == DialogResult.No)
@@ -192,7 +192,7 @@ namespace PartsCatalog.DesktopForms.Views {
 		public void DeleteComponentImage() {
 			DialogResult dialog = MessageBox.Show("Are you sure you want to delete " +
 				"this component's image?", "Delete component image?",
-				MessageBoxButtons.YesNo);
+				MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
 			// Ignore if the user was mistaken.
 			if (dialog == DialogResult.No)
@@ -226,7 +226,7 @@ namespace PartsCatalog.DesktopForms.Views {
 		public void DeleteComponentDatasheet() {
 			DialogResult dialog = MessageBox.Show("Are you sure you want to delete " +
 				"this component's datasheet?", "Delete component datasheet?",
-				MessageBoxButtons.YesNo);
+				MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
 			// Ignore if the user was mistaken.
 			if (dialog == DialogResult.No)
