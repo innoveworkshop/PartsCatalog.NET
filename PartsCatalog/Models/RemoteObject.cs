@@ -142,7 +142,8 @@ namespace PartsCatalog.Models {
 		}
 
 		/// <summary>
-		/// 
+		/// Retrieves the object data from the server as needed. This function
+		/// should be used inside of properties.
 		/// </summary>
 		protected void LazyLoad() {
 			if (Persistent > PersistenceStatus.NotLoaded)
@@ -164,8 +165,17 @@ namespace PartsCatalog.Models {
 		/// Checks if the object has been fully loaded and is persistent.
 		/// </summary>
 		/// <returns>True if the object has been fully loaded.</returns>
-		public Boolean IsPersistent() {
+		public bool IsPersistent() {
 			return Persistent == PersistenceStatus.Loaded;
+		}
+
+		/// <summary>
+		/// Checks if the object is either loaded or is ready to be loaded at
+		/// any time.
+		/// </summary>
+		/// <returns>True if the object is valid and can be loaded.</returns>
+		public bool IsValid() {
+			return Persistent >= PersistenceStatus.NotLoaded;
 		}
 
 		/// <summary>
