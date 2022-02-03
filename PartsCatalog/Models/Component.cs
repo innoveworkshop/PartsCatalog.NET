@@ -44,6 +44,15 @@ namespace PartsCatalog.Models {
 		}
 
 		/// <summary>
+		/// Creates a component object with the name.
+		/// </summary>
+		/// <param name="name">Possible ID of the object in the database.</param>
+		public Component(string name) : this() {
+			Name = name;
+			Persistent = PersistenceStatus.NotLoaded;
+		}
+
+		/// <summary>
 		/// Populates the specified list with all of the available components that belong
 		/// to a given container given by <paramref name="criteria"/>.
 		/// </summary>
@@ -79,7 +88,14 @@ namespace PartsCatalog.Models {
 
 			// Build the query URL.
 			URL url = new URL(BaseURL, Endpoint);
-			url.Parameters.Add("id", ID);
+			if (ID >= 0) {
+				url.Parameters.Add("id", ID);
+			} else if (Name.Length > 0) {
+				url.Parameters.Add("name", Name);
+			} else {
+				throw new Exception("We need at least an ID or a name to " +
+					"retrieve a component");
+			}
 			url.Parameters.Add("format", "xml");
 
 			// Request the item from the server.
@@ -87,6 +103,7 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
+			ID = int.Parse(doc.DocumentElement.Attributes["id"].InnerText);
 			Name = doc.DocumentElement["name"].InnerText;
 			Quantity = int.Parse(doc.DocumentElement["quantity"].InnerText);
 			Description = doc.DocumentElement["description"].InnerText;

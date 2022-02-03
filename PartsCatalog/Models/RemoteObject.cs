@@ -190,9 +190,9 @@ namespace PartsCatalog.Models {
 		/// ID of the remote object in the database.
 		/// </summary>
 		public int ID {
-			get { return _id; }
+			get { LazyLoad(); return _id; }
 			set {
-				if (value >= 0)
+				if ((value >= 0) && (Persistent < PersistenceStatus.NotLoaded))
 					Persistent = PersistenceStatus.NotLoaded;
 
 				_id = value;
