@@ -31,6 +31,31 @@ namespace PartsCatalog.Models {
 			ID = id;
 		}
 
+		public override void LoadFromXML(XmlNode node) {
+			Persistent = PersistenceStatus.Loading;
+
+			// Populate the object.
+			ID = int.Parse(node.Attributes["id"].Value);
+			Name = node["name"].InnerText;
+			SubCategories.Clear();
+
+			// Do we have a partial object?
+			if (node["subcategories"] == null) {
+				Persistent = PersistenceStatus.PartiallyLoaded;
+				return;
+			}
+
+			// Load up our sub-categories.
+			foreach (XmlNode subNode in node["subcategories"].ChildNodes) {
+				SubCategory subCategory = new SubCategory();
+				subCategory.LoadFromXML(subNode);
+
+				SubCategories.Add(subCategory);
+			}
+
+			Persistent = PersistenceStatus.Loaded;
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
@@ -47,13 +72,7 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
-			Name = doc.DocumentElement["name"].InnerText;
-			SubCategories.Clear();
-			foreach (XmlNode node in doc.DocumentElement["subcategories"].ChildNodes) {
-				SubCategories.Add(new SubCategory(int.Parse(node.Attributes["id"].InnerText)));
-			}
-
-			Persistent = PersistenceStatus.Loaded;
+			LoadFromXML(doc.DocumentElement);
 		}
 
 		public override void Save() {
@@ -110,8 +129,15 @@ namespace PartsCatalog.Models {
 		/// Child sub-categories.
 		/// </summary>
 		public List<SubCategory> SubCategories {
-			get { LazyLoad(); return _subCategories; }
-			set { LazyLoad(); _subCategories = value; }
+			get {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				return _subCategories;
+			}
+
+			set {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				_subCategories = value;
+			}
 		}
 	}
 }

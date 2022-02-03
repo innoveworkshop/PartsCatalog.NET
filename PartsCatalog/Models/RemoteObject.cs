@@ -24,10 +24,18 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		public enum PersistenceStatus {
 			Creating = 0,
-			NotLoaded = 1,
-			Loading = 2,
-			Loaded = 3
+			NotLoaded,
+			PartiallyLoaded,
+			Loading,
+			Loaded
 		}
+
+		/// <summary>
+		/// Populates the object with an XML node with all or some of its field.
+		/// This may or may not mark the object as fully loaded.
+		/// </summary>
+		/// <param name="node">XML node to populate the object with.</param>
+		public abstract void LoadFromXML(XmlNode node);
 
 		/// <summary>
 		/// Populates the specified list with all of the available objects of its type.
@@ -48,7 +56,7 @@ namespace PartsCatalog.Models {
 			// Populate the object.
 			foreach (XmlNode node in doc.DocumentElement.ChildNodes) {
 				T obj = new T();
-				obj.ID = int.Parse(node.Attributes["id"].InnerText);
+				obj.LoadFromXML(node);
 
 				list.Add(obj);
 			}
@@ -142,15 +150,31 @@ namespace PartsCatalog.Models {
 		}
 
 		/// <summary>
+		/// Stages the object to be loaded in the next opportunity.
+		/// </summary>
+		public void StageLoad() {
+			Persistent = PersistenceStatus.NotLoaded;
+		}
+
+		/// <summary>
 		/// Retrieves the object data from the server as needed. This function
 		/// should be used inside of properties.
 		/// </summary>
 		protected void LazyLoad() {
-			if (Persistent > PersistenceStatus.NotLoaded)
-				return;
+			if (Persistent == PersistenceStatus.NotLoaded)
+				Retrieve();
+		}
 
-			// Populate the object.
-			Retrieve();
+		/// <summary>
+		/// Retrieves the object data from the server as needed. This function
+		/// should be used inside of properties.
+		/// </summary>
+		/// <param name="loadStatus">Only load if this is the status of the
+		/// object or if it's marked as <c>NotLoaded</c>.</param>
+		protected void LazyLoad(PersistenceStatus loadStatus) {
+			LazyLoad();
+			if (Persistent == loadStatus)
+				Retrieve();
 		}
 
 		/// <summary>
@@ -189,11 +213,11 @@ namespace PartsCatalog.Models {
 		/// <summary>
 		/// ID of the remote object in the database.
 		/// </summary>
-		public int ID {
+		public virtual int ID {
 			get { LazyLoad(); return _id; }
 			set {
 				if ((value >= 0) && (Persistent < PersistenceStatus.NotLoaded))
-					Persistent = PersistenceStatus.NotLoaded;
+					StageLoad();
 
 				_id = value;
 			}
@@ -202,7 +226,7 @@ namespace PartsCatalog.Models {
 		/// <summary>
 		/// Object and database persistence relationship.
 		/// </summary>
-		protected PersistenceStatus Persistent {
+		protected virtual PersistenceStatus Persistent {
 			get { return _persistent; }
 			set { _persistent = value; }
 		}

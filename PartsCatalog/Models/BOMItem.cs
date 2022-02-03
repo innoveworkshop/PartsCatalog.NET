@@ -37,6 +37,24 @@ namespace PartsCatalog.Models {
 			ID = id;
 		}
 
+		public override void LoadFromXML(XmlNode node) {
+			Persistent = PersistenceStatus.Loading;
+
+			// Populate the object.
+			ID = int.Parse(node.Attributes["id"].Value);
+			Populate = Convert.ToBoolean(node.Attributes["populate"].Value);
+			Value = node["value"].InnerText;
+			Part.LoadFromXML(node["component"]);
+			Parent.LoadFromXML(node["project"]);
+			RefDes.Clear();
+			foreach (XmlNode subNode in node["refdesignators"].ChildNodes) {
+				RefDes.Add(subNode.InnerText);
+			}
+			Quantity = int.Parse(node["quantity"].InnerText);
+
+			Persistent = PersistenceStatus.Loaded;
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
@@ -53,17 +71,7 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
-			Populate = Convert.ToBoolean(doc.DocumentElement.GetAttribute("populate"));
-			Value = doc.DocumentElement["value"].InnerText;
-			Part.ID = int.Parse(doc.DocumentElement["component"].GetAttribute("id"));
-			Parent.ID = int.Parse(doc.DocumentElement["project"].GetAttribute("id"));
-			RefDes.Clear();
-			foreach (XmlNode node in doc.DocumentElement["refdesignators"].ChildNodes) {
-				RefDes.Add(node.InnerText);
-			}
-			Quantity = int.Parse(doc.DocumentElement["quantity"].InnerText);
-
-			Persistent = PersistenceStatus.Loaded;
+			LoadFromXML(doc.DocumentElement);
 		}
 
 		public override void Save() {

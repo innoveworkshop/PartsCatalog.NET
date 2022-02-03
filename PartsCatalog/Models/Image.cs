@@ -34,6 +34,31 @@ namespace PartsCatalog.Models {
 			ID = id;
 		}
 
+		public override void LoadFromXML(XmlNode node) {
+			Persistent = PersistenceStatus.Loading;
+
+			// Populate the object.
+			ID = int.Parse(node.Attributes["id"].Value);
+			if (node["component"] != null) {
+				AssociatedComponent = new Component();
+				AssociatedComponent.LoadFromXML(node["component"]);
+			}
+			if (node["package"] != null) {
+				AssociatedPackage = new Package();
+				AssociatedPackage.LoadFromXML(node["package"]);
+			}
+
+			// Check if we are only loading a partial object.
+			if (node["file"] == null) {
+				Persistent = PersistenceStatus.PartiallyLoaded;
+				return;
+			}
+
+			// Load the file in.
+			FileContent = Convert.FromBase64String(node["file"].InnerText);
+			Persistent = PersistenceStatus.Loaded;
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
@@ -50,16 +75,7 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
-			FileContent = Convert.FromBase64String(doc.DocumentElement["file"].InnerText);
-			if (doc.DocumentElement["component"] != null)
-				AssociatedComponent = new Component(
-					int.Parse(doc.DocumentElement["component"].GetAttribute("id")));
-			if (doc.DocumentElement["package"] != null)
-				AssociatedPackage = new Package(
-					int.Parse(doc.DocumentElement["package"].GetAttribute("id")));
-			ID = int.Parse(doc.DocumentElement.GetAttribute("id"));
-
-			Persistent = PersistenceStatus.Loaded;
+			LoadFromXML(doc.DocumentElement);
 		}
 
 		public override void Save() {
@@ -126,12 +142,12 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		/// <returns>True if we have an image associated.</returns>
 		public bool HasImage() {
-			return FileContent != null;
+			return IsValid();
 		}
 
 		public override string ToString() {
 			// Check if we actually have an image.
-			if (HasImage())
+			if (IsValid())
 				return "Image #" + ID;
 
 			return "No Image";
@@ -157,8 +173,8 @@ namespace PartsCatalog.Models {
 		/// Image as a byte array.
 		/// </summary>
 		public byte[] FileContent {
-			get { LazyLoad(); return _image; }
-			set { LazyLoad(); _image = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _image; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _image = value; }
 		}
 
 		/// <summary>

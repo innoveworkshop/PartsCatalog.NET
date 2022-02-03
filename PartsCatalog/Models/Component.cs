@@ -49,7 +49,7 @@ namespace PartsCatalog.Models {
 		/// <param name="name">Possible ID of the object in the database.</param>
 		public Component(string name) : this() {
 			Name = name;
-			Persistent = PersistenceStatus.NotLoaded;
+			StageLoad();
 		}
 
 		/// <summary>
@@ -76,8 +76,45 @@ namespace PartsCatalog.Models {
 
 			// Populate the object.
 			foreach (XmlNode node in doc.DocumentElement.ChildNodes) {
-				list.Add(new Component(int.Parse(node.Attributes["id"].InnerText)));
+				Component component = new Component();
+				component.LoadFromXML(node);
+
+				list.Add(component);
 			}
+		}
+
+		public override void LoadFromXML(XmlNode node) {
+			Persistent = PersistenceStatus.Loading;
+
+			// Populate the object.
+			ID = int.Parse(node.Attributes["id"].InnerText);
+			Name = node["name"].InnerText;
+			Quantity = int.Parse(node["quantity"].InnerText);
+			Description = node["description"].InnerText;
+			Category.LoadFromXML(node["category"]);
+			SubCategory.LoadFromXML(node["subcategory"]);
+			Package.LoadFromXML(node["package"]);
+			if (node["image"] != null)
+				Picture.LoadFromXML(node["image"]);
+			if (node["datasheet"] != null)
+				Datasheet.LoadFromXML(node["datasheet"]);
+			Properties.Clear();
+
+			// Do we have a partial object?
+			if (node["properties"] == null) {
+				Persistent = PersistenceStatus.PartiallyLoaded;
+				return;
+			}
+
+			// Finish loading up our properties.
+			foreach (XmlNode subNode in node["properties"].ChildNodes) {
+				Property property = new Property();
+				property.LoadFromXML(subNode);
+
+				Properties.Add(property);
+			}
+
+			Persistent = PersistenceStatus.Loaded;
 		}
 
 		public override void Retrieve() {
@@ -103,23 +140,7 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
-			ID = int.Parse(doc.DocumentElement.Attributes["id"].InnerText);
-			Name = doc.DocumentElement["name"].InnerText;
-			Quantity = int.Parse(doc.DocumentElement["quantity"].InnerText);
-			Description = doc.DocumentElement["description"].InnerText;
-			Category.ID = int.Parse(doc.DocumentElement["category"].GetAttribute("id"));
-			SubCategory.ID = int.Parse(doc.DocumentElement["subcategory"].GetAttribute("id"));
-			Package.ID = int.Parse(doc.DocumentElement["package"].GetAttribute("id"));
-			if (doc.DocumentElement["image"] != null)
-				Picture.ID = int.Parse(doc.DocumentElement["image"].GetAttribute("id"));
-			if (doc.DocumentElement["datasheet"] != null)
-				Datasheet.ID = int.Parse(doc.DocumentElement["datasheet"].GetAttribute("id"));
-			Properties.Clear();
-			foreach (XmlNode node in doc.DocumentElement["properties"].ChildNodes) {
-				Properties.Add(new Property(int.Parse(node.Attributes["id"].InnerText)));
-			}
-
-			Persistent = PersistenceStatus.Loaded;
+			LoadFromXML(doc.DocumentElement);
 		}
 
 		public override void Save() {
@@ -247,8 +268,8 @@ namespace PartsCatalog.Models {
 		/// Component properties list.
 		/// </summary>
 		public List<Property> Properties {
-			get { LazyLoad(); return _properties; }
-			set { LazyLoad(); _properties = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _properties; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _properties = value; }
 		}
 
 		/// <summary>

@@ -33,6 +33,25 @@ namespace PartsCatalog.Models {
 			ID = id;
 		}
 
+		public override void LoadFromXML(XmlNode node) {
+			Persistent = PersistenceStatus.Loading;
+
+			// Populate the object.
+			ID = int.Parse(node.Attributes["id"].Value);
+			Name = node["name"].InnerText;
+			Revision = node["revision"].InnerText;
+			Description = node["description"].InnerText;
+			BOM.Clear();
+			foreach (XmlNode subNode in node["bom"].ChildNodes) {
+				BOMItem item = new BOMItem();
+				item.LoadFromXML(subNode);
+
+				BOM.Add(item);
+			}
+
+			Persistent = PersistenceStatus.Loaded;
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
@@ -49,15 +68,7 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
-			Name = doc.DocumentElement["name"].InnerText;
-			Revision = doc.DocumentElement["revision"].InnerText;
-			Description = doc.DocumentElement["description"].InnerText;
-			BOM.Clear();
-			foreach (XmlNode node in doc.DocumentElement["bom"].ChildNodes) {
-				BOM.Add(new BOMItem(int.Parse(node.Attributes["id"].InnerText)));
-			}
-
-			Persistent = PersistenceStatus.Loaded;
+			LoadFromXML(doc.DocumentElement);
 		}
 
 		public override void Save() {

@@ -170,6 +170,17 @@ namespace PartsCatalog.Models {
 			Upload(tmpFileName);
 		}
 
+		public override void LoadFromXML(XmlNode node) {
+			Persistent = PersistenceStatus.Loading;
+
+			// Populate the object.
+			ID = int.Parse(node.Attributes["id"].Value);
+			AssociatedComponent = new Component();
+			AssociatedComponent.LoadFromXML(node["component"]);
+
+			Persistent = PersistenceStatus.Loaded;
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
@@ -186,11 +197,7 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
-			AssociatedComponent = new Component(
-					int.Parse(doc.DocumentElement["component"].GetAttribute("id")));
-			ID = int.Parse(doc.DocumentElement.GetAttribute("id"));
-
-			Persistent = PersistenceStatus.Loaded;
+			LoadFromXML(doc.DocumentElement);
 		}
 
 		public override void Save() {

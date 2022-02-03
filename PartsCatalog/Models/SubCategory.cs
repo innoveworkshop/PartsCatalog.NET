@@ -31,6 +31,24 @@ namespace PartsCatalog.Models {
 			ID = id;
 		}
 
+		public override void LoadFromXML(XmlNode node) {
+			Persistent = PersistenceStatus.Loading;
+
+			// Populate the object.
+			ID = int.Parse(node.Attributes["id"].Value);
+			Name = node["name"].InnerText;
+
+			// Check if we have a parent category object.
+			if (node["category"] == null) {
+				Persistent = PersistenceStatus.PartiallyLoaded;
+				return;
+			}
+
+			// Load the parent category.
+			Parent.LoadFromXML(node["category"]);
+			Persistent = PersistenceStatus.Loaded;
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
@@ -47,10 +65,7 @@ namespace PartsCatalog.Models {
 			XmlDocument doc = GetRemoteXML(request);
 
 			// Populate the object.
-			Name = doc.DocumentElement["name"].InnerText;
-			Parent.ID = int.Parse(doc.DocumentElement["category"].GetAttribute("id"));
-
-			Persistent = PersistenceStatus.Loaded;
+			LoadFromXML(doc.DocumentElement);
 		}
 
 		public override void Save() {
@@ -110,8 +125,8 @@ namespace PartsCatalog.Models {
 		/// Parent category.
 		/// </summary>
 		public Category Parent {
-			get { LazyLoad(); return _parent; }
-			set { LazyLoad(); _parent = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _parent; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _parent = value; }
 		}
 	}
 }
