@@ -104,6 +104,7 @@ namespace PartsCatalog.DesktopForms.Utilities {
 			PopulateCategoriesList();
 			PopulatePackagesList();
 			cmbCategory.SelectedValue = GetCategoryID();
+			PopulateSubCategoriesList(AssociatedComponent.Category);
 			cmbSubCategory.SelectedValue = GetSubCategoryID();
 			cmbPackage.SelectedValue = GetPackageID();
 
@@ -130,6 +131,12 @@ namespace PartsCatalog.DesktopForms.Utilities {
 			subCategories.Clear();
 			foreach (SubCategory subCategory in parent.SubCategories) {
 				subCategories.Add(subCategory);
+			}
+
+			// Make sure we at least get the pre-selected item.
+			SubCategory preselSubCategory = (SubCategory)cmbSubCategory.SelectedItem;
+			if (preselSubCategory != null) {
+				AssociatedComponent.SubCategory = preselSubCategory;
 			}
 		}
 
