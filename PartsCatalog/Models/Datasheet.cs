@@ -113,6 +113,63 @@ namespace PartsCatalog.Models {
 			Persistent = PersistenceStatus.Loaded;
 		}
 
+		/// <summary>
+		/// Downloads a datasheet from the internet and then uploads it to the server.
+		/// </summary>
+		/// <param name="url">URL of the datasheet to download.</param>
+		public void UploadFromURL(string url) {
+			// Check if the associated component is valid.
+			if (!AssociatedComponent.IsPersistent()) {
+				try {
+					AssociatedComponent.Retrieve();
+					if (!AssociatedComponent.IsPersistent())
+						throw new Exception("Associated component still in creation");
+				} catch (Exception ex) {
+					throw new Exception("Associated component isn't persistent (" +
+						ex.Message + ")");
+				}
+			}
+
+			// Get our temporary file.
+			string tmpFileName = Path.GetTempPath() + AssociatedComponent.Name +
+				"-" + Guid.NewGuid().ToString() + ".pdf";
+
+			// Prepare the request.
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url.ToString());
+			request.KeepAlive = false;
+			request.ProtocolVersion = HttpVersion.Version10;
+			request.ServicePoint.ConnectionLimit = 1;
+			request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko";
+			request.UseDefaultCredentials = true;
+
+			// Request the file and perform some checks.
+			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+			if ((response.StatusCode != HttpStatusCode.OK) &&
+					(response.StatusCode != HttpStatusCode.Moved) &&
+					(response.StatusCode != HttpStatusCode.Redirect)) {
+				throw new Exception("An error occured while trying to request the datasheet");
+			}
+
+			// Download the datasheet.
+			Stream stream = response.GetResponseStream();
+			Stream fileStream = File.OpenWrite(tmpFileName);
+			byte[] bytes = new byte[4096];
+			int bytesRead = 0;
+			do {
+				if (stream == null)
+					continue;
+
+				// Read the bytes and write them to the file.
+				bytesRead = stream.Read(bytes, 0, bytes.Length);
+				fileStream.Write(bytes, 0, bytesRead);
+			} while (bytesRead != 0);
+			stream.Close();
+			fileStream.Close();
+
+			// Upload our datasheet.
+			Upload(tmpFileName);
+		}
+
 		public override void Retrieve() {
 			// Prevent loading when the object is being populated.
 			if (Persistent == PersistenceStatus.Creating)
