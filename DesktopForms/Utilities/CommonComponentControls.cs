@@ -290,7 +290,7 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		/// </summary>
 		public PartsCatalog.Models.Component AssociatedComponent {
 			get { return _component; }
-			set { _component = value; PopulateWithComponent(true); }
+			set { _component = value; PopulateWithComponent(false); }
 		}
 
 		/******************
