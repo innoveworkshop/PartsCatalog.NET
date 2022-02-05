@@ -54,8 +54,18 @@
     <Compile Include="Views\PropertyForm.Designer.cs">
       <DependentUpon>PropertyForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\WebLoadingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\WebLoadingDialog.Designer.cs">
+      <DependentUpon>WebLoadingDialog.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Dialogs\WebLoadingDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WebLoadingDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
