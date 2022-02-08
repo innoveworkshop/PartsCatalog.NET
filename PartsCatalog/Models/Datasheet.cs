@@ -36,7 +36,7 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		public void Open() {
 			// Make sure we are persistent.
-			LazyLoad();
+			LazyLoad(PersistenceStatus.PartiallyLoaded);
 			if (!IsPersistent())
 				throw new Exception("Can't open the datasheet file in a non-persistent object");
 
@@ -51,7 +51,7 @@ namespace PartsCatalog.Models {
 		/// <returns>Number of bytes downloaded.</returns>
 		public uint Download() {
 			// Make sure we are persistent.
-			LazyLoad();
+			LazyLoad(PersistenceStatus.PartiallyLoaded);
 			if (!IsPersistent())
 				throw new Exception("Can't download the datasheet file in a non-persistent object");
 
@@ -175,10 +175,15 @@ namespace PartsCatalog.Models {
 
 			// Populate the object.
 			ID = int.Parse(node.Attributes["id"].Value);
-			AssociatedComponent = new Component();
-			AssociatedComponent.LoadFromXML(node["component"]);
+			if (node["component"] != null) {
+				AssociatedComponent = new Component();
+				AssociatedComponent.LoadFromXML(node["component"]);
 
-			Persistent = PersistenceStatus.Loaded;
+				Persistent = PersistenceStatus.Loaded;
+				return;
+			}
+
+			Persistent = PersistenceStatus.PartiallyLoaded;
 		}
 
 		public override void Retrieve() {
@@ -233,8 +238,14 @@ namespace PartsCatalog.Models {
 		/// Associated component.
 		/// </summary>
 		public Component AssociatedComponent {
-			get { LazyLoad(); return _component; }
-			set { LazyLoad(); _component = value; }
+			get {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				return _component;
+			}
+			set {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				_component = value;
+			}
 		}
 
 		/// <summary>
@@ -242,7 +253,7 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		public string FilePath {
 			get {
-				LazyLoad();
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
 				return Path.GetTempPath() + ID + "-" +
 					FileUtil.GetFileNameSafeString(AssociatedComponent.Name) + ".pdf";
 			}

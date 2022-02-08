@@ -57,6 +57,10 @@ namespace PartsCatalog.Models {
 			// Load the file in.
 			FileContent = Convert.FromBase64String(node["file"].InnerText);
 			Persistent = PersistenceStatus.Loaded;
+
+			// Make sure we at least got something to tie this image to.
+			if ((node["component"] == null) && (node["package"] == null))
+				Persistent = PersistenceStatus.PartiallyLoaded;
 		}
 
 		public override void Retrieve() {
@@ -157,16 +161,28 @@ namespace PartsCatalog.Models {
 		/// Associated to a component?
 		/// </summary>
 		public Component AssociatedComponent {
-			get { LazyLoad(); return _component; }
-			set { LazyLoad(); _component = value; }
+			get {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				return _component;
+			}
+			set {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				_component = value;
+			}
 		}
 
 		/// <summary>
 		/// Associated to a package?
 		/// </summary>
 		public Package AssociatedPackage {
-			get { LazyLoad(); return _package; }
-			set { LazyLoad(); _package = value; }
+			get {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				return _package;
+			}
+			set {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				_package = value;
+			}
 		}
 
 		/// <summary>
