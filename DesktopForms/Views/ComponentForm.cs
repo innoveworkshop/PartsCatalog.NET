@@ -44,17 +44,16 @@ namespace PartsCatalog.DesktopForms.Views {
 			txtName.DataBindings.Clear();
 			txtDescription.DataBindings.Clear();
 
+			// Populate common controls.
+			commonComponentControls.PopulateWithComponent(false);
+
 			// Bind data to fields.
-			AssociatedComponent.Retrieve();
 			updQuantity.DataBindings.Add("Value", AssociatedComponent, "Quantity",
 				true, DataSourceUpdateMode.OnPropertyChanged);
 			txtName.DataBindings.Add("Text", AssociatedComponent, "Name", true,
 				DataSourceUpdateMode.OnPropertyChanged);
 			txtDescription.DataBindings.Add("Text", AssociatedComponent, "Description",
 				true, DataSourceUpdateMode.OnPropertyChanged);
-
-			// Populate common controls.
-			commonComponentControls.PopulateWithComponent(false);
 
 			// Populate the component image and datasheet.
 			PopulateComponentImage(true);
