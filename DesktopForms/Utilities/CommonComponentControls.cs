@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
 using PartsCatalog.Models;
+#if PocketPC
+using PartsCatalog.PocketPCForms.Views;
+#else
 using PartsCatalog.DesktopForms.Views;
+#endif
 
 namespace PartsCatalog.DesktopForms.Utilities {
 	/// <summary>
@@ -18,12 +23,16 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		private ComboBox cmbCategory;
 		private ComboBox cmbSubCategory;
 		private ComboBox cmbPackage;
+#if PocketPC
+		private DataGrid grdProperties;
+#else
 		private DataGridView grdProperties;
 
 		// Properties grid context menu.
 		private ContextMenuStrip ctmProperty;
 		private ToolStripMenuItem contextPropertyEditToolStripMenuItem;
 		private ToolStripMenuItem contextPropertyDeleteToolStripMenuItem;
+#endif
 
 		// Binding variables.
 		private PartsCatalog.Models.Component _component;
@@ -41,9 +50,15 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		/// <param name="cmbSubCategory">Sub-Category combobox control.</param>
 		/// <param name="cmbPackage">Package combobox control.</param>
 		/// <param name="grdProperties">Properties table control.</param>
+#if !PocketPC
 		public CommonComponentControls(Form frmParent, PartsCatalog.Models.Component component,
 				ComboBox cmbCategory, ComboBox cmbSubCategory, ComboBox cmbPackage,
 				DataGridView grdProperties) {
+#else
+		public CommonComponentControls(Form frmParent, PartsCatalog.Models.Component component,
+				ComboBox cmbCategory, ComboBox cmbSubCategory, ComboBox cmbPackage,
+				DataGrid grdProperties) {
+#endif
 			// Initialize the binding variables.
 			properties = new BindingList<Property>();
 			categories = new BindingList<Category>();
@@ -62,8 +77,11 @@ namespace PartsCatalog.DesktopForms.Utilities {
 			this.cmbCategory.SelectedIndexChanged += new System.EventHandler(this.cmbCategory_SelectedIndexChanged);
 			this.cmbSubCategory.SelectedIndexChanged += new System.EventHandler(this.cmbSubCategory_SelectedIndexChanged);
 			this.cmbPackage.SelectedIndexChanged += new System.EventHandler(this.cmbPackage_SelectedIndexChanged);
+#if !PocketPC
 			this.grdProperties.MouseClick += new System.Windows.Forms.MouseEventHandler(this.grdProperties_MouseClick);
 			this.grdProperties.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.grdProperties_CellMouseDoubleClick);
+#else
+#endif
 
 			// Setup data bindings for the comboboxes.
 			cmbCategory.DataSource = categories;
@@ -77,8 +95,11 @@ namespace PartsCatalog.DesktopForms.Utilities {
 			cmbPackage.ValueMember = "ID";
 
 			// Setup the properties table.
+#if !PocketPC
 			grdProperties.AutoGenerateColumns = false;
+#endif
 			grdProperties.DataSource = properties;
+#if !PocketPC
 			grdProperties.Columns.Add("Name", "Property");
 			grdProperties.Columns.Add("Value", "Value");
 			grdProperties.Columns["Name"].DataPropertyName = "Name";
@@ -86,6 +107,7 @@ namespace PartsCatalog.DesktopForms.Utilities {
 			grdProperties.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 			grdProperties.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 			grdProperties.Columns["Value"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+#endif
 
 			// Associate component.
 			AssociatedComponent = component;
@@ -156,8 +178,12 @@ namespace PartsCatalog.DesktopForms.Utilities {
 			property.Parent = AssociatedComponent;
 
 			PropertyForm form = new PropertyForm(property);
+#if !PocketPC
 			form.StartPosition = FormStartPosition.CenterParent;
 			DialogResult result = form.ShowDialog(frmParent);
+#else
+			DialogResult result = form.ShowDialog();
+#endif
 
 			// Append the new property to the lists if the user saved it.
 			if (result == DialogResult.Yes) {
@@ -172,8 +198,12 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		/// <param name="property">Property to be edited.</param>
 		public void EditProperty(Property property) {
 			PropertyForm form = new PropertyForm(property);
+#if !PocketPC
 			form.StartPosition = FormStartPosition.CenterParent;
-			form.ShowDialog(frmParent);
+			DialogResult result = form.ShowDialog(frmParent);
+#else
+			DialogResult result = form.ShowDialog();
+#endif
 		}
 
 		/// <summary>
@@ -184,7 +214,8 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		public void DeleteProperty(Property property) {
 			DialogResult dialog = MessageBox.Show("Are you sure you want to delete " +
 				"the property '" + property.Name + "'?", "Delete component property?",
-				MessageBoxButtons.YesNo);
+				MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+				MessageBoxDefaultButton.Button2);
 
 			// Ignore if the user was mistaken.
 			if (dialog == DialogResult.No)
@@ -200,6 +231,7 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		/// Sets up the context menu used by the properties grid.
 		/// </summary>
 		protected void SetupPropertiesContextMenu() {
+#if !PocketPC
 			// Creates all of the context menu controls.
 			this.ctmProperty = new System.Windows.Forms.ContextMenuStrip();
 			this.contextPropertyEditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -228,6 +260,7 @@ namespace PartsCatalog.DesktopForms.Utilities {
 			this.contextPropertyDeleteToolStripMenuItem.Click += new System.EventHandler(this.contextPropertyDeleteToolStripMenuItem_Click);
 
 			this.ctmProperty.ResumeLayout(false);
+#endif
 		}
 
 		/// <summary>
@@ -267,22 +300,26 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		/// Edits the currently selected property item in the table.
 		/// </summary>
 		public void EditPropertyGridItem() {
+#if !PocketPC
 			Property property = (Property)grdProperties.CurrentRow.DataBoundItem;
 			if (property == null)
 				return;
 
 			EditProperty(property);
+#endif
 		}
 
 		/// <summary>
 		/// Deletes the currently selected property item in the table.
 		/// </summary>
 		public void DeletePropertyGridItem() {
+#if !PocketPC
 			Property property = (Property)grdProperties.CurrentRow.DataBoundItem;
 			if (property == null)
 				return;
 
 			DeleteProperty(property);
+#endif
 		}
 
 		/// <summary>
@@ -322,11 +359,18 @@ namespace PartsCatalog.DesktopForms.Utilities {
 			AssociatedComponent.Package = package;
 		}
 
+#if !PocketPC
 		private void grdProperties_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
+#else
+		private void grdResults_DoubleClick(object sender, EventArgs e) {
+#endif
+#if !PocketPC
 			Property property = (Property)grdProperties.CurrentRow.DataBoundItem;
 			EditProperty(property);
+#endif
 		}
 
+#if !PocketPC
 		private void grdProperties_MouseClick(object sender, MouseEventArgs e) {
 			// Select the row where the right button was clicked and show the context menu.
 			if (e.Button == MouseButtons.Right) {
@@ -342,6 +386,7 @@ namespace PartsCatalog.DesktopForms.Utilities {
 				ctmProperty.Show((Control)sender, new Point(e.X, e.Y));
 			}
 		}
+#endif
 
 		private void contextPropertyEditToolStripMenuItem_Click(object sender, EventArgs e) {
 			EditPropertyGridItem();

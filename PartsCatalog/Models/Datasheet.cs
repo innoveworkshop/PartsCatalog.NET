@@ -4,7 +4,6 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Xml;
-using System.Drawing;
 using PartsCatalog.Utilities;
 
 namespace PartsCatalog.Models {
@@ -42,7 +41,11 @@ namespace PartsCatalog.Models {
 
 			// Download the file and open it with the default viewer.
 			Download();
+#if PocketPC
+			throw new NotImplementedException("Can't open PDFs under PocketPC yet");
+#else
 			System.Diagnostics.Process.Start(FilePath);
+#endif
 		}
 
 		/// <summary>
@@ -73,6 +76,9 @@ namespace PartsCatalog.Models {
 		/// </summary>
 		/// <param name="filePath">Datasheet file to be uploaded.</param>
 		public void Upload(string filePath) {
+#if PocketPC
+			throw new NotImplementedException("Uploading hasn't been implemented under PocketPC yet");
+#else
 			// Build the query URL.
 			URL url = new URL(BaseURL, Endpoint);
 			url.Parameters.Add("format", "xml");
@@ -111,6 +117,7 @@ namespace PartsCatalog.Models {
 
 			ID = int.Parse(doc.DocumentElement.GetAttribute("id"));
 			Persistent = PersistenceStatus.Loaded;
+#endif
 		}
 
 		/// <summary>
@@ -140,7 +147,9 @@ namespace PartsCatalog.Models {
 			request.ProtocolVersion = HttpVersion.Version10;
 			request.ServicePoint.ConnectionLimit = 1;
 			request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko";
+#if !PocketPC
 			request.UseDefaultCredentials = true;
+#endif
 
 			// Request the file and perform some checks.
 			HttpWebResponse response = (HttpWebResponse)request.GetResponse();

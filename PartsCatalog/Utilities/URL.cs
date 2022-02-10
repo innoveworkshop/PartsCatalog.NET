@@ -31,7 +31,7 @@ namespace PartsCatalog.Utilities {
 
 			// Make sure we don't get double slashes when appending the endpoint to the base URL.
 			if (url.EndsWith("/") && endpoint.StartsWith("/"))
-				url = url.Remove(url.Length - 1);
+				url = url.Remove(url.Length - 1, 1);
 			url += endpoint;
 
 			// Append the parameters.
@@ -43,7 +43,7 @@ namespace PartsCatalog.Utilities {
 				}
 
 				// Remote the trailling & from the URL string.
-				url = url.Remove(url.Length - 1);
+				url = url.Remove(url.Length - 1, 1);
 			}
 
 			return url;

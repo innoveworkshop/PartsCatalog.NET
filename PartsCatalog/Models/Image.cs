@@ -4,7 +4,6 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Xml;
-using System.Drawing;
 using PartsCatalog.Utilities;
 
 namespace PartsCatalog.Models {
@@ -191,27 +190,6 @@ namespace PartsCatalog.Models {
 		public byte[] FileContent {
 			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _image; }
 			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _image = value; }
-		}
-
-		/// <summary>
-		/// Image as a bitmap.
-		/// </summary>
-		public Bitmap FileBitmap {
-			get {
-				MemoryStream ms = new MemoryStream();
-				LazyLoad();
-
-				// Check if we actually have an image.
-				if (!HasImage())
-					return null;
-
-				// Create the bitmap image from the byte array.
-				ms.Write(FileContent, 0, Convert.ToInt32(FileContent.Length));
-				Bitmap bitmap = new Bitmap(ms, false);
-				ms.Dispose();
-
-				return bitmap;
-			}
 		}
 	}
 }

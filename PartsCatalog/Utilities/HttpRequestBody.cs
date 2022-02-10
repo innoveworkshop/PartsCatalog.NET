@@ -56,8 +56,8 @@ namespace PartsCatalog.Utilities {
 						Uri.EscapeUriString(parameter.Value.ToString()) + "&";
 				}
 
-				// Remote the trailling & from the string.
-				body = body.Remove(body.Length - 1);
+				// Remove the trailling & from the string.
+				body = body.Remove(body.Length - 1, 1);
 			}
 
 			return body;

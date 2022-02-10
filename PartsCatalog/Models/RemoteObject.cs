@@ -95,7 +95,7 @@ namespace PartsCatalog.Models {
 				Stream stream = response.GetResponseStream();
 				StreamReader reader = new StreamReader(stream, Encoding.GetEncoding("UTF-8"));
 				doc.Load(reader);
-				reader.Close();
+				reader.Close(); 
 				stream.Close();
 				response.Close();
 
