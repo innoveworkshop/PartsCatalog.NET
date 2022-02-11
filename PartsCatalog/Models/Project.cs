@@ -42,6 +42,14 @@ namespace PartsCatalog.Models {
 			Revision = node["revision"].InnerText;
 			Description = node["description"].InnerText;
 			BOM.Clear();
+
+			// Check if we are loading in a partial object.
+			if (node["bom"] == null) {
+				Persistent = PersistenceStatus.PartiallyLoaded;
+				return;
+			}
+
+			// Load in the BOM items.
 			foreach (XmlNode subNode in node["bom"].ChildNodes) {
 				BOMItem item = new BOMItem();
 				item.LoadFromXML(subNode);
@@ -109,32 +117,32 @@ namespace PartsCatalog.Models {
 		/// Project name.
 		/// </summary>
 		public string Name {
-			get { LazyLoad(); return _name; }
-			set { LazyLoad(); _name = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _name; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _name = value; }
 		}
 
 		/// <summary>
 		/// Project revision.
 		/// </summary>
 		public string Revision {
-			get { LazyLoad(); return _revision; }
-			set { LazyLoad(); _revision = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _revision; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _revision = value; }
 		}
 
 		/// <summary>
 		/// Project description.
 		/// </summary>
 		public string Description {
-			get { LazyLoad(); return _description; }
-			set { LazyLoad(); _description = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _description; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _description = value; }
 		}
 
 		/// <summary>
 		/// BOM items.
 		/// </summary>
 		public List<BOMItem> BOM {
-			get { LazyLoad(); return _bomItems; }
-			set { LazyLoad(); _bomItems = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _bomItems; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _bomItems = value; }
 		}
 	}
 }

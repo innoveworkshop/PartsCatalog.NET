@@ -136,6 +136,10 @@ namespace PartsCatalog.Models {
 		/// Deletes the entry from the remote database without affecting our local copy.
 		/// </summary>
 		public virtual void Delete() {
+			// Do we just want to delete an object that we're in the process of creating?
+			if (!IsValid())
+				return;
+
 			// Build the query URL.
 			URL url = new URL(BaseURL, Endpoint);
 			url.Parameters.Add("id", ID);

@@ -45,12 +45,20 @@ namespace PartsCatalog.Models {
 			Populate = Convert.ToBoolean(node.Attributes["populate"].Value);
 			Value = node["value"].InnerText;
 			Part.LoadFromXML(node["component"]);
-			Parent.LoadFromXML(node["project"]);
 			RefDes.Clear();
 			foreach (XmlNode subNode in node["refdesignators"].ChildNodes) {
 				RefDes.Add(subNode.InnerText);
 			}
 			Quantity = int.Parse(node["quantity"].InnerText);
+
+			// Check if we are only loading a partial object.
+			if (node["project"] == null) {
+				Persistent = PersistenceStatus.PartiallyLoaded;
+				return;
+			}
+
+			// Load the parent project in.
+			Parent.LoadFromXML(node["project"]);
 
 			Persistent = PersistenceStatus.Loaded;
 		}
@@ -139,33 +147,33 @@ namespace PartsCatalog.Models {
 		/// BOM item component should be populated?
 		/// </summary>
 		public bool Populate {
-			get { LazyLoad(); return _populate; }
-			set { LazyLoad(); _populate = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _populate; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _populate = value; }
 		}
 
 		/// <summary>
 		/// BOM item quantity.
 		/// </summary>
 		public int Quantity {
-			get { LazyLoad(); return _quantity; }
-			set { LazyLoad(); _quantity = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _quantity; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _quantity = value; }
 		}
 
 		/// <summary>
 		/// BOM item component value.
 		/// </summary>
 		public string Value {
-			get { LazyLoad(); return _value; }
-			set { LazyLoad(); _value = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _value; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _value = value; }
 		}
 
 		/// <summary>
 		/// BOM item reference designators.
 		/// </summary>
 		public List<string> RefDes {
-			get { LazyLoad(); return _refDes; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _refDes; }
 			set {
-				LazyLoad();
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
 				_refDes = value;
 				Quantity = _refDes.Count;
 			}
@@ -175,9 +183,12 @@ namespace PartsCatalog.Models {
 		/// BOM item reference designators as a string.
 		/// </summary>
 		public string RefDesString {
-			get { LazyLoad(); return String.Join(" ", _refDes.ToArray()); }
+			get {
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
+				return String.Join(" ", _refDes.ToArray());
+			}
 			set {
-				LazyLoad();
+				LazyLoad(PersistenceStatus.PartiallyLoaded);
 				_refDes = new List<string>(value.Split(' '));
 				Quantity = _refDes.Count;
 			}
@@ -187,16 +198,16 @@ namespace PartsCatalog.Models {
 		/// BOM item component.
 		/// </summary>
 		public Component Part {
-			get { LazyLoad(); return _component; }
-			set { LazyLoad(); _component = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _component; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _component = value; }
 		}
 
 		/// <summary>
 		/// BOM item parent project.
 		/// </summary>
 		public Project Parent {
-			get { LazyLoad(); return _parent; }
-			set { LazyLoad(); _parent = value; }
+			get { LazyLoad(PersistenceStatus.PartiallyLoaded); return _parent; }
+			set { LazyLoad(PersistenceStatus.PartiallyLoaded); _parent = value; }
 		}
 	}
 }
