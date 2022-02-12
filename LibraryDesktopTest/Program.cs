@@ -13,7 +13,7 @@ namespace LibraryDesktopTest {
 		static void Main() {
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new ComponentForm(new PartsCatalog.Models.Component(139)));
+			Application.Run(new ComponentSearchForm());
 		}
 	}
 }

@@ -59,5 +59,12 @@ namespace PartsCatalog.DesktopForms.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap find {
+            get {
+                object obj = ResourceManager.GetObject("find", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
