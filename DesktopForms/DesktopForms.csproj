@@ -41,6 +41,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\ComponentGridHelper.cs" />
     <Compile Include="Views\ComponentForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -48,6 +49,12 @@
       <DependentUpon>ComponentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\ComponentSearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ComponentSearchForm.Designer.cs">
+      <DependentUpon>ComponentSearchForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\PropertyForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +82,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>ComponentForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\ComponentSearchForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ComponentSearchForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\PropertyForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PropertyForm.cs</DependentUpon>
@@ -85,6 +96,9 @@
       <Project>{7EF4491D-DF78-42D0-9339-28F84C8C1560}</Project>
       <Name>PartsCatalog</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\find.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
