@@ -167,6 +167,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.grdResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.grdResults.Size = new System.Drawing.Size(595, 282);
 			this.grdResults.TabIndex = 3;
+			this.grdResults.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdResults_CellDoubleClick);
 			// 
 			// ComponentSearchForm
 			// 
@@ -178,6 +179,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			this.Controls.Add(this.grpSearchParameters);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "ComponentSearchForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Find Component";
 			this.Load += new System.EventHandler(this.ComponentSearchForm_Load);
 			this.grpSearchParameters.ResumeLayout(false);

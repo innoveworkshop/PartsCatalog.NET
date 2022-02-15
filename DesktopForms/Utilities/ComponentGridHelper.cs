@@ -65,7 +65,7 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		/// component view window.
 		/// </summary>
 		public void SetupDefaultDoubleClickEvent() {
-			grdComponents.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(ShowSelectedComponentEvent);
+			grdComponents.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(ShowSelectedComponentDefaultEvent);
 		}
 
 		/// <summary>
@@ -147,7 +147,7 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		 * Event Handlers *
 		 ******************/
 
-		protected void ShowSelectedComponentEvent(object sender, DataGridViewCellMouseEventArgs e) {
+		public void ShowSelectedComponentDefaultEvent(object sender, DataGridViewCellMouseEventArgs e) {
 			ComponentForm form = new ComponentForm(
 				(PartsCatalog.Models.Component)grdComponents.CurrentRow.DataBoundItem);
 			form.Show();

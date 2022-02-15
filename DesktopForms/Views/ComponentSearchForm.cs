@@ -17,6 +17,8 @@ namespace PartsCatalog.DesktopForms.Views {
 		private BindingList<Category> categories;
 		private BindingList<Package> packages;
 		private ComponentGridHelper gridHelper;
+		private bool isSelecting;
+		private PartsCatalog.Models.Component _selectedComponent;
 
 		/// <summary>
 		/// Initializes the search form.
@@ -27,6 +29,8 @@ namespace PartsCatalog.DesktopForms.Views {
 			// Initialize the binding variables.
 			categories = new BindingList<Category>();
 			packages = new BindingList<Package>();
+			isSelecting = false;
+			SelectedComponent = null;
 
 			// Setup data bindings for the comboboxes.
 			cmbCategory.DataSource = categories;
@@ -38,7 +42,16 @@ namespace PartsCatalog.DesktopForms.Views {
 
 			// Setup the components table.
 			gridHelper = new ComponentGridHelper(grdResults);
-			gridHelper.SetupDefaultDoubleClickEvent();
+		}
+
+		/// <summary>
+		/// Shows the form as a dialog for selecting a component.
+		/// </summary>
+		/// <param name="owner">Owner of this dialog.</param>
+		/// <returns>DialogResult.OK if a selection was made.</returns>
+		public DialogResult ShowDialogSelection(IWin32Window owner) {
+			isSelecting = true;
+			return ShowDialog(owner);
 		}
 
 		/// <summary>
@@ -77,6 +90,19 @@ namespace PartsCatalog.DesktopForms.Views {
 			gridHelper.SearchComponents(query);
 		}
 
+		/// <summary>
+		/// Component selected by the user.
+		/// </summary>
+		public PartsCatalog.Models.Component SelectedComponent {
+			get { return _selectedComponent; }
+			protected set {
+				_selectedComponent = value;
+
+				if (isSelecting)
+					this.DialogResult = DialogResult.OK;
+			}
+		}
+
 		/******************
 		 * Event Handlers *
 		 ******************/
@@ -93,6 +119,17 @@ namespace PartsCatalog.DesktopForms.Views {
 		private void txtSearchQuery_KeyPress(object sender, KeyPressEventArgs e) {
 			if (e.KeyChar == (char)Keys.Enter)
 				PerformSearch();
+		}
+
+		private void grdResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e) {
+			// Just show the component if we are not performing a selection.
+			if (!isSelecting) {
+				gridHelper.ShowSelectedComponentDefaultEvent(sender, null);
+				return;
+			}
+
+			// Select the component.
+			SelectedComponent = (PartsCatalog.Models.Component)grdResults.CurrentRow.DataBoundItem;
 		}
 	}
 }
