@@ -53,6 +53,14 @@ namespace PartsCatalog.DesktopForms.Utilities {
 		}
 
 		/// <summary>
+		/// Searches for components given a search query.
+		/// </summary>
+		/// <param name="searchQuery">Search query string.</param>
+		public void SearchComponents(string searchQuery) {
+			new PartsCatalog.Models.Component().Search(partsComponents, searchQuery);
+		}
+
+		/// <summary>
 		/// Sets up the default double-click event for each cell to open the
 		/// component view window.
 		/// </summary>

@@ -61,6 +61,20 @@ namespace PartsCatalog.DesktopForms.Views {
 		/// Performs a search.
 		/// </summary>
 		protected void PerformSearch() {
+			string query = txtSearchQuery.Text;
+
+			// Include the category if requested.
+			Category category = (Category)cmbCategory.SelectedItem;
+			if (category != null)
+				query += " category:" + category.ID;
+
+			// Include the package if requested.
+			Package package = (Package)cmbPackage.SelectedItem;
+			if (package != null)
+				query += " package:" + package.ID;
+
+			// Search for the components.
+			gridHelper.SearchComponents(query);
 		}
 
 		/******************

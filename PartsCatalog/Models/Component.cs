@@ -83,6 +83,34 @@ namespace PartsCatalog.Models {
 			}
 		}
 
+		/// <summary>
+		/// Populates the specified list with all resulting components of a search
+		/// given by the search query.
+		/// </summary>
+		/// <param name="list">List to be populated with components from the remote server.</param>
+		/// <param name="searchQuery">Search query string.</param>
+		public void Search(IList<Component> list, string searchQuery) {
+			// Start with a blank slate.
+			list.Clear();
+
+			// Build the query URL.
+			URL url = new URL(BaseURL, "/search");
+			url.Parameters.Add("format", "xml");
+			url.Parameters.Add("query", searchQuery);
+
+			// Request the items from the server.
+			WebRequest request = WebRequest.Create(url.ToString());
+			XmlDocument doc = GetRemoteXML(request);
+
+			// Populate the object.
+			foreach (XmlNode node in doc.DocumentElement.ChildNodes) {
+				Component component = new Component();
+				component.LoadFromXML(node);
+
+				list.Add(component);
+			}
+		}
+
 		public override void LoadFromXML(XmlNode node) {
 			Persistent = PersistenceStatus.Loading;
 
