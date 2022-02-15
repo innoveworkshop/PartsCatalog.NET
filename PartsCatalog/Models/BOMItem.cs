@@ -113,6 +113,10 @@ namespace PartsCatalog.Models {
 				}
 			}
 
+			// Make sure we have a valid value.
+			if (Value == null)
+				Value = "";
+
 			// Prepare the request.
 			WebRequest request = WebRequest.Create(url.ToString());
 			request.Method = "POST";
