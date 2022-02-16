@@ -25,6 +25,7 @@ namespace PartsCatalog.DesktopForms.Views {
 			commonComponentControls = new CommonComponentControls(
 				this, new PartsCatalog.Models.Component(), cmbCategory,
 				cmbSubCategory, cmbPackage, grdProperties);
+			PopulateWithComponent();
 		}
 
 		/// <summary>
